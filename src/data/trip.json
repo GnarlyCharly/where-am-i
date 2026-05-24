@@ -1,0 +1,15 @@
+{
+  "name": "Europe 2025",
+  "animationSpeed": 300,
+  "lat": 59.3293,
+  "lng": 18.0686,
+  "sections": [
+    {
+      "name": "Stockholm",
+      "lat": 59.3293,
+      "lng": 18.0686,
+      "date": "2025-06-01",
+      "notes": "Start of the trip."
+    }
+  ]
+}
