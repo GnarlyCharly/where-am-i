@@ -1,6 +1,6 @@
 {
   "name": "Europe 2025",
-  "animationSpeed": 300,
+  "animationSpeed": 100,
   "lat": 59.3293,
   "lng": 18.0686,
   "sections": [
@@ -9,7 +9,98 @@
       "lat": 59.3293,
       "lng": 18.0686,
       "date": "2025-06-01",
-      "notes": "Start of the trip."
+      "notes": "The adventure begins."
+    },
+    {
+      "lat": 57.7816,
+      "lng": 14.1557,
+      "date": "2025-06-03",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Copenhagen",
+      "lat": 55.6761,
+      "lng": 12.5683,
+      "date": "2025-06-07",
+      "transportMode": "campervan",
+      "notes": "Crossed the Øresund Bridge from Malmö."
+    },
+    {
+      "name": "Hamburg",
+      "lat": 53.5753,
+      "lng": 10.0153,
+      "date": "2025-06-11",
+      "transportMode": "campervan",
+      "waypoints": [
+        { "lat": 54.9024, "lng": 9.7928 }
+      ],
+      "notes": "Flensburg border crossing, then straight down to Hamburg."
+    },
+    {
+      "lat": 50.9333,
+      "lng": 6.9500,
+      "date": "2025-06-14",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Amsterdam",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "date": "2025-06-17",
+      "transportMode": "campervan",
+      "notes": "Canals, bikes, and stroopwafels."
+    },
+    {
+      "name": "Paris",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "date": "2025-06-21",
+      "transportMode": "campervan",
+      "notes": "Three nights parked in the Bois de Boulogne.",
+      "media": [
+        "https://picsum.photos/seed/paris-dawn/1200/800",
+        "https://picsum.photos/seed/paris-night/1200/800",
+        "https://picsum.photos/seed/seine-river/1200/800"
+      ]
+    },
+    {
+      "lat": 45.7640,
+      "lng": 4.8357,
+      "date": "2025-06-26",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Barcelona",
+      "lat": 41.3851,
+      "lng": 2.1734,
+      "date": "2025-06-30",
+      "transportMode": "campervan",
+      "notes": "Gaudí, tapas, and a sea view pitch."
+    },
+    {
+      "name": "Palma de Mallorca",
+      "lat": 39.5696,
+      "lng": 2.6502,
+      "date": "2025-07-04",
+      "transportMode": "ferry",
+      "waypoints": [
+        { "lat": 40.4, "lng": 2.05 },
+        { "lat": 39.9, "lng": 2.40 }
+      ],
+      "notes": "Overnight ferry from Barcelona — arrived at sunrise."
+    },
+    {
+      "name": "Lisbon",
+      "lat": 38.7169,
+      "lng": -9.1399,
+      "date": "2025-07-10",
+      "transportMode": "plane",
+      "speed": 800,
+      "notes": "Flew from Palma. Fado, pastéis de nata, and the Atlantic.",
+      "media": [
+        "https://picsum.photos/seed/lisbon-tram/1200/800",
+        "https://picsum.photos/seed/lisbon-sunset/1200/800"
+      ]
     }
   ]
 }
