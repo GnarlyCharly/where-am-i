@@ -10,7 +10,7 @@ A personal travel map web app built with React (Vite) and Leaflet. Visualizes a 
 
 - One trip, multiple sections (e.g. "Scandinavia", "Central Europe", "Iberia")
 - Each section is an ordered sequence of stops connected by animated lines
-- Transport mode per leg: campervan, plane, ferry, train, car, walk
+- Transport mode per leg: campervan, plane, ferry
 - Plane legs rendered as great-circle arcs; all others as straight polylines
 - Single consistent line color across all sections
 - Global animation speed with per-leg overrides
@@ -21,7 +21,7 @@ A personal travel map web app built with React (Vite) and Leaflet. Visualizes a 
 
 - Multiple trips / users
 - Real-time data or a database
-- Mobile app
+- Native iOS/Android app
 
 ---
 
@@ -51,7 +51,6 @@ A personal travel map web app built with React (Vite) and Leaflet. Visualizes a 
   "lng": 18.0686,
   "sections": [
     {
-      "id": "stockholm",
       "name": "Stockholm",
       "lat": 59.3293,
       "lng": 18.0686,
@@ -59,27 +58,24 @@ A personal travel map web app built with React (Vite) and Leaflet. Visualizes a 
       "notes": "Start of the trip."
     },
     {
-      "id": "gothenburg-waypoint",
       "lat": 57.7071,
       "lng": 11.9668,
       "date": "2025-06-04",
       "transportMode": "campervan"
     },
     {
-      "id": "copenhagen",
       "name": "Copenhagen",
       "lat": 55.6761,
       "lng": 12.5683,
       "date": "2025-06-10",
       "transportMode": "ferry",
-      "stops": [
+      "waypoints": [
         { "lat": 57.3, "lng": 11.8 },
         { "lat": 56.5, "lng": 12.1 }
       ],
       "notes": "Overnight ferry from Gothenburg."
     },
     {
-      "id": "mallorca",
       "name": "Mallorca",
       "lat": 39.6953,
       "lng": 3.0176,
@@ -111,15 +107,14 @@ Every entry in `sections` is a section. Each section is one location — the lin
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `id` | string | yes | Unique slug |
 | `name` | string | no | If present, the name pops in on the map when the icon arrives. Omit for silent waypoints. |
 | `lat` / `lng` | number | yes | Destination coordinates for this section |
-| `stops` | array | no | Intermediate `{ lat, lng }` points to shape the path between the previous section and this one. Drawn in order before the destination. |
+| `waypoints` | array | no | Intermediate `{ lat, lng }` points to shape the path between the previous section and this one. Drawn in order before the destination. |
 | `date` | string (ISO date) | no | Date of arrival |
 | `transportMode` | string | no | Transport mode used to travel from the previous section to this one. Omit on the first section. |
 | `speed` | number | no | Per-leg speed override in km/animation-second. |
 | `notes` | string | no | Free-text shown in the sidebar / popup |
-| `media` | string[] | no | List of image or video URLs. Shown as a fullscreen popover when the icon arrives; animation pauses until all items have been displayed. Each item shows for 1 second. |
+| `media` | string[] | no | List of image or video URLs. Shown as a fullscreen popover when the icon arrives; animation pauses until all items have been displayed. Images show for 1 second; videos play for their full duration. |
 
 Sections without a `name` are silent waypoints — they shape the route and allow mode changes without adding a label on the map.
 
@@ -158,16 +153,16 @@ where-am-i/
 │   └── icons/
 │       ├── campervan.svg
 │       ├── plane.svg
-│       ├── ferry.svg
-│       └── campervan.svg
+│       └── ferry.svg
 ├── src/
 │   ├── data/
 │   │   └── trip.json               # Single trip with sections
 │   ├── components/
 │   │   ├── Map.tsx                 # Leaflet map wrapper
-│   │   ├── SectionRoute.tsx        # Ghost route + animated painting layer for one section
+│   │   ├── SectionRoute.tsx        # Renders one section's polyline (overview + animated reveal)
 │   │   ├── TravelIcon.tsx          # Moving icon marker (rotates, swaps per mode)
 │   │   ├── StopLabel.tsx           # City name label that pops in on the map
+│   │   ├── MediaPopover.tsx        # Fullscreen media overlay with segmented progress bar
 │   │   └── BottomSheet.tsx         # Expandable section list + playback controls
 │   ├── hooks/
 │   │   └── useRouteAnimation.ts    # requestAnimationFrame loop, position interpolation
@@ -239,8 +234,8 @@ Mobile-first. The map always fills the entire screen; the section list overlays 
 
 ```
 ┌────────────────────────────────────────────┐
-│                            ┌─────────────┐ │
-│                            │  Europe 2025│ │
+│ [+]                        ┌─────────────┐ │
+│ [−]                        │  Europe 2025│ │
 │        Leaflet Map         ├─────────────┤ │
 │                            │ ✓ Stockholm │ │
 │   🚐══════●─ ─ ─ ─         │ ✓ Gothenburg│ │
@@ -271,6 +266,8 @@ Mobile-first. The map always fills the entire screen; the section list overlays 
 - **Completed sections** — remain visible at full opacity once the icon has passed
 - **Icon** — moves along path, rotates to face direction of travel, swaps SVG on mode change
 - **Named sections** — all labels visible in overview; hidden ahead of the icon during playback, revealed as the icon arrives
+- **Map viewport** — on load fits the entire trip; when playback starts zooms in ~2 levels with a smooth transition, then auto-pans to follow the icon; Reset zooms back out to fit the whole trip
+- **Zoom controls** — custom +/− buttons in the top-left corner; default zoom set to fit the whole trip on load; user can zoom freely at any time without disrupting auto-pan
 
 ---
 
@@ -281,7 +278,7 @@ Mobile-first. The map always fills the entire screen; the section list overlays 
 On load, before any interaction:
 1. All section lines are drawn immediately at **100% opacity** — the full trip is visible
 2. All named-section labels are shown on the map
-3. The map fits the bounding box of the entire trip
+3. The map fits and zooms to the bounding box of the entire trip (Leaflet `fitBounds`)
 4. No icon is shown; no animation is running
 
 This gives the user the complete picture of the journey before they press Play.
@@ -290,8 +287,8 @@ This gives the user the complete picture of the journey before they press Play.
 
 | User action | Result |
 |---|---|
-| Press **Play** | Animation starts from the first section |
-| Press **Play** on a specific section row | Animation starts from that section; all preceding sections switch to full opacity (treated as complete) |
+| Press **Play** | Map zooms in ~2 levels from the overview zoom with a smooth transition, then animation starts from the first section |
+| Press **Play** on a specific section row | Map zooms in ~2 levels, then animation starts from that section; all preceding sections treated as complete |
 | Press **Pause** | Icon freezes; current state preserved |
 | Press **Play** again after pause | Resumes from current position |
 | Press **Reset** | Returns to overview state — all lines back to overview opacity, no icon |
@@ -316,7 +313,8 @@ Each `requestAnimationFrame`:
    - Always: advance leg, swap icon SVG if `transportMode` changed
    - If section has `name`: reveal its label on the map
    - If section has `media`: pause animation, open media popover, cycle through each item at 1 s each, then resume
-7. On section complete: section line locks to full opacity; animation continues into next section automatically
+7. Auto-pan the map to keep the icon centered (`panTo` with no animation lag — smooth follow)
+8. On section complete: section line locks to full opacity; animation continues into next section automatically
 
 ### Trip state machine
 
@@ -348,7 +346,7 @@ overview → playing ⇄ media → overview (reset)
 - **Media popover** — fullscreen overlay (dark backdrop); images use `object-fit: cover`; videos autoplay muted
   - **Images** — shown for 1 second, then auto-advance
   - **Videos** — shown for the full duration of the video, then auto-advance
-  - **Progress bar** — thin bar across the top of the popover; for images it fills over 1 s; for videos it tracks the video's playback position
+  - **Progress bar** — segmented bar across the top (one segment per media item, Instagram-style); each segment fills at its own rate (1 s for images, video duration for videos)
   - **Click/tap right half** — skip to next item immediately; if no more items, close popover and resume animation
   - **Click/tap left half** — go back to the previous item; no-op if already on the first item
   - **Press and hold** — pauses the current item's timer/video playback for as long as the pointer/finger is held; releasing resumes from where it paused
@@ -363,6 +361,7 @@ overview → playing ⇄ media → overview (reset)
 - ~~Animation speed~~ → **km/animation-second, global default + per-leg `speed` override** ✓
 - ~~Stop labels~~ → **`name` is optional; if present, pops in on the map. No `name` = silent waypoint.** ✓
 - ~~One trip or multiple~~ → **one trip, multiple sections; completed sections stay painted** ✓
+- ~~Map viewport~~ → **fits whole trip on load; auto-pans to follow icon during playback; custom +/− zoom buttons top-left** ✓
 - Stats panel: countries visited, total km, months on the road?
 - Dark mode / alternative tile style?
 
