@@ -21,7 +21,7 @@ export default function TravelIcon({ pos, bearing, mode, playState }: Props) {
   const icon = useMemo(
     () =>
       L.divIcon({
-        html: `<img src="/icons/${mode}.svg" style="width:40px;height:auto;display:block;transform:rotate(${bearingRef.current}deg);" />`,
+        html: `<img src="/icons/${mode}.svg" style="width:40px;height:auto;display:block;transform:rotate(${bearingRef.current - 90}deg);" />`,
         className: '',
         iconSize: [40, 40],
         iconAnchor: [20, 20],
@@ -32,7 +32,7 @@ export default function TravelIcon({ pos, bearing, mode, playState }: Props) {
   // Apply bearing rotation directly on the DOM element each frame — no icon recreation
   useEffect(() => {
     const img = markerRef.current?.getElement()?.querySelector<HTMLImageElement>('img')
-    if (img) img.style.transform = `rotate(${bearing}deg)`
+    if (img) img.style.transform = `rotate(${bearing - 90}deg)`
   })
 
   if (playState === 'overview') return null

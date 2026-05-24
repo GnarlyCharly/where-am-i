@@ -19,15 +19,20 @@ const path = buildPath(trip)
 
 export default function App() {
   const mapRef = useRef<L.Map | null>(null)
+  // Set to true during the flyTo zoom; cleared on moveend so auto-pan doesn't
+  // interrupt the zoom animation by calling panTo on the very next RAF frame.
+  const isZoomingRef = useRef(false)
 
-  // Zoom in when playback starts, passing the starting section index
-  const onZoom = useCallback((_fromIndex: number) => {
+  const onZoom = useCallback((fromIndex: number) => {
     const map = mapRef.current
     if (!map) return
-    map.flyTo(map.getCenter(), map.getZoom() + PLAY_ZOOM_OFFSET, {
-      animate: true,
-      duration: 0.5,
-    })
+    const section = trip.sections[fromIndex]
+    const centre: L.LatLngExpression = section
+      ? [section.lat, section.lng]
+      : [trip.lat, trip.lng]
+    isZoomingRef.current = true
+    map.flyTo(centre, map.getZoom() + PLAY_ZOOM_OFFSET, { animate: true, duration: 0.5 })
+    map.once('moveend', () => { isZoomingRef.current = false })
   }, [])
 
   const {
@@ -48,7 +53,7 @@ export default function App() {
 
   // Auto-pan the map to follow the icon during active playback
   useEffect(() => {
-    if (iconPos && playState === 'playing') {
+    if (iconPos && playState === 'playing' && !isZoomingRef.current) {
       mapRef.current?.panTo(iconPos, { animate: false })
     }
   }, [iconPos, playState])
