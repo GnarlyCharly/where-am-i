@@ -110,7 +110,7 @@ Every entry in `sections` is a section. Each section is one location — the lin
 | `name` | string | no | If present, the name pops in on the map when the icon arrives. Omit for silent waypoints. |
 | `lat` / `lng` | number | yes | Destination coordinates for this section |
 | `waypoints` | array | no | Intermediate `{ lat, lng }` points to shape the path between the previous section and this one. Drawn in order before the destination. |
-| `date` | string (ISO date) | no | Date of arrival |
+| `date` | string (ISO date) | yes | Date of arrival |
 | `transportMode` | string | no | Transport mode used to travel from the previous section to this one. Omit on the first section. |
 | `speed` | number | no | Per-leg speed override in km/animation-second. |
 | `notes` | string | no | Free-text shown in the sidebar / popup |
