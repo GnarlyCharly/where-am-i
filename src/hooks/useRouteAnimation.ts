@@ -163,16 +163,26 @@ export function useRouteAnimation(
   }, [tick, stopRaf])
 
   const play = useCallback(
-    (fromIndex = 0) => {
+    (fromIndex?: number) => {
+      // Called without an index while paused → resume from current position
+      if (fromIndex === undefined && playStateRef.current === 'paused') {
+        playStateRef.current = 'playing'
+        setPlayState('playing')
+        startRaf()
+        return
+      }
+
+      const idx = fromIndex ?? 0
+
       stopRaf()
       lastTimeRef.current = null
 
       const startDist =
-        fromIndex > 0 ? path.distances[path.sectionEndIndices[fromIndex - 1]] : 0
+        idx > 0 ? path.distances[path.sectionEndIndices[idx - 1]] : 0
       distanceRef.current = startDist
 
       const preRevealed = new Set<number>()
-      for (let i = 0; i < fromIndex; i++) preRevealed.add(i)
+      for (let i = 0; i < idx; i++) preRevealed.add(i)
       revealedRef.current = preRevealed
       mediaIndexRef.current = 0
       mediaQueueRef.current = null
@@ -181,11 +191,11 @@ export function useRouteAnimation(
       const ptIdx = findPtIdx(path.distances, startDist)
       const initPos = path.points[ptIdx]
       const initMode = (
-        trip.sections[fromIndex]?.transportMode ?? 'campervan'
+        trip.sections[idx]?.transportMode ?? 'campervan'
       ) as TransportMode
 
       setRevealedSections(new Set(preRevealed))
-      setActiveSection(fromIndex)
+      setActiveSection(idx)
       setMediaQueue(null)
       setMediaIndex(0)
       setIconPos(initPos)
@@ -196,7 +206,7 @@ export function useRouteAnimation(
       playStateRef.current = 'playing'
       setPlayState('playing')
 
-      onZoom?.(fromIndex)
+      onZoom?.(idx)
       startRaf()
     },
     [path, trip, onZoom, stopRaf, startRaf],
