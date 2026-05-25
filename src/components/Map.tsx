@@ -2,6 +2,7 @@ import { useEffect, type ReactNode, type RefObject } from 'react'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import type { Trip } from '@/types'
+import { Button } from '@/components/ui/button'
 
 interface Props {
   children?: ReactNode
@@ -41,20 +42,24 @@ export default function Map({ children, trip, mapRef }: Props) {
       </MapContainer>
 
       <div className="absolute top-4 left-4 z-[1000] flex flex-col gap-1">
-        <button
+        <Button
+          variant="outline"
+          size="icon"
           onClick={() => mapRef.current?.zoomIn()}
-          className="w-8 h-8 bg-white rounded shadow font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-center text-lg leading-none cursor-pointer"
+          className="bg-white shadow"
           aria-label="Zoom in"
         >
           +
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
           onClick={() => mapRef.current?.zoomOut()}
-          className="w-8 h-8 bg-white rounded shadow font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-center text-lg leading-none cursor-pointer"
+          className="bg-white shadow text-gray-700 hover:bg-gray-50"
           aria-label="Zoom out"
         >
           −
-        </button>
+        </Button>
       </div>
     </div>
   )

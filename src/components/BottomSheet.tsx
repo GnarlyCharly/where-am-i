@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { PlayState, Section, Trip } from '@/types'
+import { Button } from '@/components/ui/button'
 
 interface Props {
   trip: Trip
@@ -92,19 +93,23 @@ export default function BottomSheet({
         </span>
         {isActive && showInlineControls && (
           <div className="flex gap-1 shrink-0 ml-1">
-            <button
-              className="px-2 h-7 text-xs rounded border border-orange-300 text-[#e85d04] bg-white hover:bg-orange-50"
+            <Button
+              variant="outline"
+              size="default"
+              className="px-2 text-[#e85d04] border-orange-300 hover:bg-orange-50 hover:text-[#e85d04]"
               onClick={(e) => { e.stopPropagation(); handlePlayPause() }}
             >
               {isPlaying ? '⏸' : '▶'}
-            </button>
-            <button
-              className="px-2 h-7 text-xs rounded border border-gray-200 text-gray-500 bg-white hover:bg-gray-50"
+            </Button>
+            <Button
+              variant="outline"
+              size="default"
+              className="px-2 text-gray-500"
               onClick={(e) => { e.stopPropagation(); reset() }}
               title="Reset"
             >
               ↺
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -160,21 +165,23 @@ export default function BottomSheet({
 
         {/* Playback controls pinned to bottom */}
         <div className="shrink-0 p-3 flex gap-2 border-t">
-          <button
+          <Button
             onClick={handlePlayPause}
             disabled={inMedia}
-            className="flex-1 h-9 rounded-lg bg-[#e85d04] text-white text-sm font-medium hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 h-9"
           >
             {isPlaying ? 'Pause' : playState === 'paused' ? 'Resume' : 'Play'}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="outline"
+            size="icon-lg"
             onClick={reset}
             disabled={!hasStarted || inMedia}
             title="Reset"
-            className="w-9 h-9 rounded-lg border border-gray-200 text-gray-600 text-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="text-gray-600 text-lg"
           >
             ↺
-          </button>
+          </Button>
         </div>
       </div>
     </>
