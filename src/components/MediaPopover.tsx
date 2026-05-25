@@ -30,6 +30,16 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia, endMed
   isVideoRef.current = isVideo
   const skipMediaRef = useRef(skipMedia)
   skipMediaRef.current = skipMedia
+  const endMediaRef = useRef(endMedia)
+  endMediaRef.current = endMedia
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') endMediaRef.current()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
 
   const cancelRaf = useCallback(() => {
     if (rafRef.current) {

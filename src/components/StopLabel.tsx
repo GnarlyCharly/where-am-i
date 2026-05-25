@@ -35,7 +35,7 @@ function LabelOverlay({ section }: Props) {
   const name = <span className="stop-name">{section.name}</span>
 
   return createPortal(
-    <div ref={wrapperRef} style={{ position: 'absolute' }}>
+    <div ref={wrapperRef} style={{ position: 'absolute', marginLeft: -5, marginTop: -10 }}>
       {section.media?.length ? (
         <HoverCard>
           <HoverCardTrigger render={<div />} delay={150} closeDelay={100} className="stop-label">

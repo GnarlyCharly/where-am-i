@@ -95,7 +95,7 @@
       "lng": -9.1399,
       "date": "2025-07-10",
       "transportMode": "plane",
-      "speed": 800,
+      "speed": 200,
       "notes": "Flew from Palma. Fado, pastéis de nata, and the Atlantic.",
       "media": [
         "https://picsum.photos/seed/lisbon-tram/1200/800",
@@ -178,7 +178,7 @@
       "lng": 12.4964,
       "date": "2025-08-08",
       "transportMode": "plane",
-      "speed": 800,
+      "speed": 200,
       "notes": "Flew from Nice. Colosseum, gelato, and getting lost in Trastevere.",
       "media": [
         "https://picsum.photos/seed/rome-colosseum/1200/800",

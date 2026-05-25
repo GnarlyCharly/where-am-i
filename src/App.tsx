@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import L from 'leaflet'
 import tripData from '@/data/trip.json'
 import { buildPath } from '@/lib/geo'
-import { PLAY_ZOOM_OFFSET } from '@/lib/config'
+import { PLAY_ZOOM_LEVEL } from '@/lib/config'
 import { useRouteAnimation } from '@/hooks/useRouteAnimation'
 import type { Trip } from '@/types'
 import Map from '@/components/Map'
@@ -19,6 +19,7 @@ const path = buildPath(trip)
 
 export default function App() {
   const mapRef = useRef<L.Map | null>(null)
+  const [speedMultiplier, setSpeedMultiplier] = useState(1)
   // Set to true during the flyTo zoom; cleared on moveend so auto-pan doesn't
   // interrupt the zoom animation by calling panTo on the very next RAF frame.
   const isZoomingRef = useRef(false)
@@ -31,9 +32,11 @@ export default function App() {
       ? [section.lat, section.lng]
       : [trip.lat, trip.lng]
     isZoomingRef.current = true
-    map.flyTo(centre, map.getZoom() + PLAY_ZOOM_OFFSET, { animate: true, duration: 0.5 })
+    map.flyTo(centre, PLAY_ZOOM_LEVEL, { animate: true, duration: 0.5 })
     map.once('moveend', () => { isZoomingRef.current = false })
   }, [])
+
+  const handleResetRef = useRef<() => void>(() => {})
 
   const {
     playState,
@@ -50,7 +53,7 @@ export default function App() {
     reset,
     skipMedia,
     endMedia,
-  } = useRouteAnimation(path, trip, onZoom)
+  } = useRouteAnimation(path, trip, speedMultiplier, onZoom, () => handleResetRef.current())
 
   // Auto-pan the map to follow the icon during active playback
   useEffect(() => {
@@ -70,6 +73,8 @@ export default function App() {
     ]
     map.flyToBounds(L.latLngBounds(coords), { padding: [40, 40], duration: 0.5 })
   }, [reset])
+
+  handleResetRef.current = handleReset
 
   // Which stop labels to show: all named in overview, only revealed ones during playback
   const visibleLabels = useMemo(
@@ -115,6 +120,10 @@ export default function App() {
         play={play}
         pause={pause}
         reset={handleReset}
+        speedMultiplier={speedMultiplier}
+        setSpeedMultiplier={setSpeedMultiplier}
+        zoomIn={() => mapRef.current?.zoomIn()}
+        zoomOut={() => mapRef.current?.zoomOut()}
       />
 
       {mediaQueue && (

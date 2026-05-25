@@ -13,7 +13,7 @@ interface Props {
 }
 
 function lineOptions(mode?: TransportMode): L.PathOptions {
-  const base = { color: ROUTE_COLOR, weight: 3, opacity: 1 }
+  const base = { color: ROUTE_COLOR, weight: 3, opacity: 0.7 }
   if (mode === 'plane') return { ...base, dashArray: '8 6' }
   if (mode === 'ferry') return { ...base, dashArray: '2 6' }
   return base
@@ -26,7 +26,7 @@ export default function SectionRoute({ trip, path, traveledPoints, playState }: 
 
   // Imperative polyline for the animated route — bypasses React reconciliation each frame
   useEffect(() => {
-    const line = L.polyline([], { color: ROUTE_COLOR, weight: 3 })
+    const line = L.polyline([], { color: ROUTE_COLOR, weight: 3, opacity: 0.7 })
     line.addTo(map)
     animLineRef.current = line
     return () => {

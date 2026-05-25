@@ -11,9 +11,14 @@ interface Props {
   play: (fromIndex?: number) => void
   pause: () => void
   reset: () => void
+  speedMultiplier: number
+  setSpeedMultiplier: (m: number) => void
+  zoomIn: () => void
+  zoomOut: () => void
 }
 
 const ROW_H = 48 // px — matches h-12, drives collapsed height calculation
+const SPEED_OPTIONS = [0.5, 1, 2, 3, 5]
 
 export default function BottomSheet({
   trip,
@@ -23,6 +28,10 @@ export default function BottomSheet({
   play,
   pause,
   reset,
+  speedMultiplier,
+  setSpeedMultiplier,
+  zoomIn,
+  zoomOut,
 }: Props) {
   const [expanded, setExpanded] = useState(false)
 
@@ -157,9 +166,42 @@ export default function BottomSheet({
 
       {/* ── Desktop panel — hidden below md ── */}
       <div className="hidden md:flex fixed top-4 right-4 z-[999] w-[280px] max-h-[calc(100vh-2rem)] bg-white rounded-xl shadow-lg flex-col">
-        {/* Trip name header */}
-        <div className="shrink-0 px-4 py-3 text-sm font-semibold text-gray-800 border-b">
-          {trip.name}
+        {/* Speed control header */}
+        <div className="shrink-0 px-3 py-2 flex items-center gap-1">
+          <span className="text-xs text-gray-500 mr-1">Speed</span>
+          {SPEED_OPTIONS.map((m) => (
+            <Button
+              key={m}
+              variant={speedMultiplier === m ? 'default' : 'outline'}
+              size="sm"
+              className="flex-1 px-1"
+              onClick={() => setSpeedMultiplier(m)}
+            >
+              {m}x
+            </Button>
+          ))}
+        </div>
+
+        {/* Zoom control */}
+        <div className="shrink-0 px-3 py-2 flex items-center gap-1 border-b">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={zoomOut}
+            aria-label="Zoom out"
+          >
+            Zoom out
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={zoomIn}
+            aria-label="Zoom in"
+          >
+            Zoom in
+          </Button>
         </div>
 
         <div className="flex flex-col flex-1 min-h-0">
@@ -170,20 +212,9 @@ export default function BottomSheet({
           <div className="shrink-0 p-3 flex gap-2 border-t">
             <Button
               onClick={handlePlayPause}
-              disabled={!hasStarted}
               className="flex-1 h-9"
             >
-              {isPlaying ? 'Pause' : playState === 'paused' ? 'Resume' : 'Play'}
-            </Button>
-            <Button
-              variant="outline"
-              size="icon-lg"
-              onClick={reset}
-              disabled={!hasStarted}
-              title="Reset"
-              className="text-gray-600 text-lg"
-            >
-              ↺
+              {isPlaying ? 'Pause' : playState === 'paused' ? 'Resume' : 'Start'}
             </Button>
           </div>
         </div>

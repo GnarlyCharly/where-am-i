@@ -37,8 +37,15 @@ function findPtIdx(distances: number[], dist: number): number {
 export function useRouteAnimation(
   path: PathData,
   trip: Trip,
+  speedMultiplier: number,
   onZoom?: (fromIndex: number) => void,
+  onComplete?: () => void,
 ): RouteAnimationReturn {
+  const speedMultiplierRef = useRef(speedMultiplier)
+  speedMultiplierRef.current = speedMultiplier
+  const onCompleteRef = useRef(onComplete)
+  onCompleteRef.current = onComplete
+
   const [playState, setPlayState] = useState<PlayState>('overview')
   const [traveledPoints, setTraveledPoints] = useState<L.LatLng[]>([])
   const [iconPos, setIconPos] = useState<L.LatLng | null>(null)
@@ -81,7 +88,10 @@ export function useRouteAnimation(
     const speed =
       trip.sections[curSecIdx]?.speed ?? trip.animationSpeed ?? DEFAULT_SPEED
 
-    distanceRef.current = Math.min(distanceRef.current + speed * delta, maxDist)
+    distanceRef.current = Math.min(
+      distanceRef.current + speed * speedMultiplierRef.current * delta,
+      maxDist,
+    )
     const dist = distanceRef.current
 
     // Interpolate icon position between path points
@@ -150,6 +160,7 @@ export function useRouteAnimation(
       stopRaf()
       playStateRef.current = 'paused'
       setPlayState('paused')
+      onCompleteRef.current?.()
       return
     }
 
