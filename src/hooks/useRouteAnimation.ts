@@ -177,37 +177,48 @@ export function useRouteAnimation(
       stopRaf()
       lastTimeRef.current = null
 
-      const startDist =
-        idx > 0 ? path.distances[path.sectionEndIndices[idx - 1]] : 0
+      // Start FROM sections[idx]: the animation begins at sections[idx]'s location
+      // and travels toward sections[idx+1] and beyond.
+      const startDist = path.distances[path.sectionEndIndices[idx]] ?? 0
       distanceRef.current = startDist
 
+      // Mark sections 0..idx as already revealed (we've "arrived" at idx)
       const preRevealed = new Set<number>()
-      for (let i = 0; i < idx; i++) preRevealed.add(i)
+      for (let i = 0; i <= idx; i++) preRevealed.add(i)
       revealedRef.current = preRevealed
       mediaIndexRef.current = 0
-      mediaQueueRef.current = null
 
-      // Set icon at the leg's starting point immediately so there's no blank frame
+      const nextIdx = Math.min(idx + 1, trip.sections.length - 1)
       const ptIdx = findPtIdx(path.distances, startDist)
       const initPos = path.points[ptIdx]
-      const initMode = (
-        trip.sections[idx]?.transportMode ?? 'campervan'
-      ) as TransportMode
+      const initMode = (trip.sections[nextIdx]?.transportMode ?? 'campervan') as TransportMode
 
       setRevealedSections(new Set(preRevealed))
-      setActiveSection(idx)
-      setMediaQueue(null)
-      setMediaIndex(0)
+      setActiveSection(nextIdx)
       setIconPos(initPos)
       setIconBearing(0)
       setIconMode(initMode)
       setTraveledPoints(path.points.slice(0, ptIdx + 1))
 
-      playStateRef.current = 'playing'
-      setPlayState('playing')
-
       onZoom?.(idx)
-      startRaf()
+
+      // If this section has media, show it first — animation resumes from startDist after
+      const media = trip.sections[idx].media
+      if (media?.length) {
+        mediaQueueRef.current = media
+        mediaIndexRef.current = 0
+        playStateRef.current = 'media'
+        setMediaQueue(media)
+        setMediaIndex(0)
+        setPlayState('media')
+      } else {
+        mediaQueueRef.current = null
+        setMediaQueue(null)
+        setMediaIndex(0)
+        playStateRef.current = 'playing'
+        setPlayState('playing')
+        startRaf()
+      }
     },
     [path, trip, onZoom, stopRaf, startRaf],
   )

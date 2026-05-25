@@ -49,6 +49,7 @@ export default function App() {
     pause,
     reset,
     skipMedia,
+    endMedia,
   } = useRouteAnimation(path, trip, onZoom)
 
   // Auto-pan the map to follow the icon during active playback
@@ -121,6 +122,7 @@ export default function App() {
           mediaQueue={mediaQueue}
           mediaIndex={mediaIndex}
           skipMedia={skipMedia}
+          endMedia={endMedia}
         />
       )}
     </div>

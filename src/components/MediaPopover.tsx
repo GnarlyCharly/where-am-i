@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { IMAGE_DURATION_MS } from '@/lib/config'
 
 const VIDEO_EXTS = /\.(mp4|webm|mov)$/i
@@ -8,9 +9,10 @@ interface Props {
   mediaQueue: string[]
   mediaIndex: number
   skipMedia: (direction: 'forward' | 'back') => void
+  endMedia: () => void
 }
 
-export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Props) {
+export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia, endMedia }: Props) {
   const currentUrl = mediaQueue[mediaIndex]
   const isVideo = VIDEO_EXTS.test(currentUrl)
 
@@ -126,6 +128,13 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerCancel}
     >
+      <button
+        className="absolute top-3 right-3 z-10 size-8 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors flex items-center justify-center"
+        onClick={(e) => { e.stopPropagation(); endMedia() }}
+      >
+        <X className="size-4" strokeWidth={2.5} />
+      </button>
+
       <div className="absolute top-0 left-0 right-0 flex gap-1 p-3 z-10">
         {mediaQueue.map((_, i) => (
           <div key={i} className="h-0.5 flex-1 bg-white/30 rounded-full overflow-hidden">
@@ -138,6 +147,23 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
           </div>
         ))}
       </div>
+
+      {mediaIndex > 0 && (
+        <button
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 size-12 rounded-full bg-black/70 text-white hover:bg-black/85 transition-colors flex items-center justify-center"
+          onClick={(e) => { e.stopPropagation(); skipMedia('back') }}
+        >
+          <ChevronLeft className="size-6" strokeWidth={2.5} />
+        </button>
+      )}
+      {mediaIndex < mediaQueue.length - 1 && (
+        <button
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 size-12 rounded-full bg-black/70 text-white hover:bg-black/85 transition-colors flex items-center justify-center"
+          onClick={(e) => { e.stopPropagation(); skipMedia('forward') }}
+        >
+          <ChevronRight className="size-6" strokeWidth={2.5} />
+        </button>
+      )}
 
       <div className="flex-1 flex items-center justify-center min-h-0">
         {isVideo ? (

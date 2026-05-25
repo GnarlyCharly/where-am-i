@@ -90,7 +90,7 @@
       "notes": "Overnight ferry from Barcelona — arrived at sunrise."
     },
     {
-      "name": "Lisbon lisbon lisbon lisbon",
+      "name": "Lisbon",
       "lat": 38.7169,
       "lng": -9.1399,
       "date": "2025-07-10",
@@ -101,6 +101,98 @@
         "https://picsum.photos/seed/lisbon-tram/1200/800",
         "https://picsum.photos/seed/lisbon-sunset/1200/800"
       ]
+    },
+    {
+      "name": "Seville",
+      "lat": 37.3891,
+      "lng": -5.9845,
+      "date": "2025-07-14",
+      "transportMode": "campervan",
+      "notes": "Flamenco, tapas, and the Alcázar gardens."
+    },
+    {
+      "lat": 37.8882,
+      "lng": -4.7794,
+      "date": "2025-07-17",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Granada",
+      "lat": 37.1773,
+      "lng": -3.5986,
+      "date": "2025-07-19",
+      "transportMode": "campervan",
+      "notes": "The Alhambra at sunrise — worth every step of the climb.",
+      "media": [
+        "https://picsum.photos/seed/granada-alhambra/1200/800",
+        "https://picsum.photos/seed/granada-night/1200/800"
+      ]
+    },
+    {
+      "name": "Gibraltar",
+      "lat": 36.1408,
+      "lng": -5.3536,
+      "date": "2025-07-23",
+      "transportMode": "campervan",
+      "notes": "Monkeys on the Rock and a surprisingly British high street."
+    },
+    {
+      "lat": 36.8340,
+      "lng": -2.4637,
+      "date": "2025-07-26",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Valencia",
+      "lat": 39.4699,
+      "lng": -0.3763,
+      "date": "2025-07-29",
+      "transportMode": "campervan",
+      "waypoints": [
+        { "lat": 37.6055, "lng": -0.9918 }
+      ],
+      "notes": "City of Arts and Sciences, then paella on the beach.",
+      "media": [
+        "https://picsum.photos/seed/valencia-arts/1200/800",
+        "https://picsum.photos/seed/valencia-beach/1200/800"
+      ]
+    },
+    {
+      "name": "Marseille",
+      "lat": 43.2965,
+      "lng": 5.3698,
+      "date": "2025-08-02",
+      "transportMode": "campervan",
+      "notes": "Bouillabaisse in the Vieux-Port, then sunset over the Calanques."
+    },
+    {
+      "name": "Nice",
+      "lat": 43.7102,
+      "lng": 7.2620,
+      "date": "2025-08-04",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Rome",
+      "lat": 41.9028,
+      "lng": 12.4964,
+      "date": "2025-08-08",
+      "transportMode": "plane",
+      "speed": 800,
+      "notes": "Flew from Nice. Colosseum, gelato, and getting lost in Trastevere.",
+      "media": [
+        "https://picsum.photos/seed/rome-colosseum/1200/800",
+        "https://picsum.photos/seed/rome-trevi/1200/800",
+        "https://picsum.photos/seed/rome-sunset/1200/800"
+      ]
+    },
+    {
+      "name": "Naples",
+      "lat": 40.8518,
+      "lng": 14.2681,
+      "date": "2025-08-12",
+      "transportMode": "campervan",
+      "notes": "Best pizza on earth, then a drive up to Vesuvius."
     }
   ]
 }

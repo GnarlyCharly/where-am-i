@@ -10,6 +10,14 @@ interface Props {
   playState: PlayState
 }
 
+// Icons point right. For leftward bearings (sin < 0), flip with scaleX(-1)
+// and rotate from the left baseline (bearing - 270) to avoid upside-down rendering.
+function iconTransform(bearing: number): string {
+  const goingLeft = Math.sin(bearing * Math.PI / 180) < 0
+  const rotation = bearing - (goingLeft ? 270 : 90)
+  return goingLeft ? `rotate(${rotation}deg) scaleX(-1)` : `rotate(${rotation}deg)`
+}
+
 export default function TravelIcon({ pos, bearing, mode, playState }: Props) {
   const markerRef = useRef<L.Marker | null>(null)
 
@@ -21,7 +29,7 @@ export default function TravelIcon({ pos, bearing, mode, playState }: Props) {
   const icon = useMemo(
     () =>
       L.divIcon({
-        html: `<img src="/icons/${mode}.svg" style="width:40px;height:auto;display:block;transform:rotate(${bearingRef.current - 90}deg);" />`,
+        html: `<img src="/icons/${mode === 'plane' ? 'flight' : mode}.png" style="width:40px;height:auto;display:block;transform:${iconTransform(bearingRef.current)};" />`,
         className: '',
         iconSize: [40, 40],
         iconAnchor: [20, 20],
@@ -32,7 +40,7 @@ export default function TravelIcon({ pos, bearing, mode, playState }: Props) {
   // Apply bearing rotation directly on the DOM element each frame — no icon recreation
   useEffect(() => {
     const img = markerRef.current?.getElement()?.querySelector<HTMLImageElement>('img')
-    if (img) img.style.transform = `rotate(${bearing - 90}deg)`
+    if (img) img.style.transform = iconTransform(bearing)
   })
 
   if (playState === 'overview') return null
