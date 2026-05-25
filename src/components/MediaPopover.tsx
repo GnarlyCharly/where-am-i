@@ -16,14 +16,14 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
 
   const [segProgress, setSegProgress] = useState(0)
 
+  const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const rafRef = useRef<number>(0)
   const isPausedRef = useRef(false)
-  const elapsedRef = useRef(0)     // ms elapsed for current image item
-  const frameStartRef = useRef(0)  // performance.now() of the last RAF call
+  const elapsedRef = useRef(0)
+  const frameStartRef = useRef(0)
   const pointerDownTimeRef = useRef(0)
 
-  // Mirror into refs so the stable RAF callback sees current values
   const isVideoRef = useRef(isVideo)
   isVideoRef.current = isVideo
   const skipMediaRef = useRef(skipMedia)
@@ -36,7 +36,6 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
     }
   }, [])
 
-  // Stable tick — reads all mutable state through refs to avoid stale closures
   const tick = useCallback((ts: number) => {
     if (isPausedRef.current) return
 
@@ -44,7 +43,6 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
     if (isVideoRef.current) {
       const vid = videoRef.current
       if (!vid || !vid.duration || isNaN(vid.duration)) {
-        // Video not ready yet — keep waiting
         rafRef.current = requestAnimationFrame(tick)
         return
       }
@@ -64,9 +62,8 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
     }
 
     rafRef.current = requestAnimationFrame(tick)
-  }, []) // intentionally empty — stable function, all state via refs
+  }, [])
 
-  // Reset and restart whenever the current item changes
   useEffect(() => {
     cancelRaf()
     isPausedRef.current = false
@@ -97,8 +94,9 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
       isPausedRef.current = false
 
       if (heldMs < 200) {
-        // Quick tap — navigate left or right
-        if (e.clientX < window.innerWidth / 2) {
+        const rect = containerRef.current?.getBoundingClientRect()
+        const midX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2
+        if (e.clientX < midX) {
           skipMediaRef.current('back')
         } else {
           skipMediaRef.current('forward')
@@ -106,7 +104,6 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
         return
       }
 
-      // Long hold released — resume from current position
       frameStartRef.current = performance.now()
       if (isVideoRef.current) videoRef.current?.play().catch(() => {})
       rafRef.current = requestAnimationFrame(tick)
@@ -114,7 +111,6 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
     [tick],
   )
 
-  // Treat pointer cancel (e.g. scroll interrupt) the same as releasing a hold
   const onPointerCancel = useCallback(() => {
     isPausedRef.current = false
     frameStartRef.current = performance.now()
@@ -124,12 +120,12 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[2000] bg-black flex items-center justify-center select-none touch-none"
+      ref={containerRef}
+      className="fixed top-4 left-4 right-4 bottom-48 md:bottom-4 md:right-76 z-2000 bg-black rounded-2xl overflow-hidden flex flex-col select-none touch-none"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerCancel}
     >
-      {/* Instagram-style segmented progress bar */}
       <div className="absolute top-0 left-0 right-0 flex gap-1 p-3 z-10">
         {mediaQueue.map((_, i) => (
           <div key={i} className="h-0.5 flex-1 bg-white/30 rounded-full overflow-hidden">
@@ -143,25 +139,27 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia }: Prop
         ))}
       </div>
 
-      {isVideo ? (
-        <video
-          key={currentUrl}
-          ref={videoRef}
-          src={currentUrl}
-          className="max-w-full max-h-full object-contain"
-          autoPlay
-          muted
-          playsInline
-        />
-      ) : (
-        <img
-          key={currentUrl}
-          src={currentUrl}
-          className="max-w-full max-h-full object-contain"
-          alt=""
-          draggable={false}
-        />
-      )}
+      <div className="flex-1 flex items-center justify-center min-h-0">
+        {isVideo ? (
+          <video
+            key={currentUrl}
+            ref={videoRef}
+            src={currentUrl}
+            className="max-w-full max-h-full object-contain"
+            autoPlay
+            muted
+            playsInline
+          />
+        ) : (
+          <img
+            key={currentUrl}
+            src={currentUrl}
+            className="max-w-full max-h-full object-contain"
+            alt=""
+            draggable={false}
+          />
+        )}
+      </div>
     </div>,
     document.body,
   )

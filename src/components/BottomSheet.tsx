@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { ImageIcon } from 'lucide-react'
 import type { PlayState, Section, Trip } from '@/types'
 import { Button } from '@/components/ui/button'
 
@@ -33,7 +34,7 @@ export default function BottomSheet({
 
   const isPlaying = playState === 'playing' || playState === 'media'
   const hasStarted = playState !== 'overview'
-  const inMedia = playState === 'media'
+
 
   // Keep active row centred in whichever list is visible
   useEffect(() => {
@@ -78,19 +79,22 @@ export default function BottomSheet({
         style={{ height: ROW_H }}
         className={[
           'flex items-center gap-2 px-4 cursor-pointer select-none',
-          isActive
-            ? 'bg-orange-50 text-[#e85d04]'
-            : 'text-gray-700 hover:bg-gray-50',
-          inMedia ? 'pointer-events-none opacity-60' : '',
+          isActive ? 'bg-orange-50 text-[#e85d04]' : 'text-gray-700 hover:bg-gray-50',
         ].join(' ')}
-        onClick={() => !inMedia && play(i)}
+        onClick={() => play(i)}
       >
         <span className={`w-4 shrink-0 text-xs ${isActive ? 'font-bold' : 'opacity-40'}`}>
           {indicator}
         </span>
-        <span className="flex-1 text-sm truncate">
-          {section.name ?? section.date}
+        <span className="flex-1 flex items-baseline gap-1.5 min-w-0">
+          <span className="text-sm shrink-0">{section.date}</span>
+          {section.name && (
+            <span className="text-sm truncate text-gray-400">{section.name}</span>
+          )}
         </span>
+        {section.media?.length && (
+          <ImageIcon className="shrink-0 size-3.5 opacity-40 mr-1" />
+        )}
         {isActive && showInlineControls && (
           <div className="flex gap-1 shrink-0 ml-1">
             <Button
@@ -158,30 +162,30 @@ export default function BottomSheet({
           {trip.name}
         </div>
 
-        {/* Scrollable section list */}
-        <div ref={desktopListRef} className="flex-1 min-h-0 overflow-y-auto">
-          {trip.sections.map((s, i) => renderRow(s, i, desktopRowRefs.current, false))}
-        </div>
+        <div className="flex flex-col flex-1 min-h-0">
+          <div ref={desktopListRef} className="flex-1 min-h-0 overflow-y-auto">
+            {trip.sections.map((s, i) => renderRow(s, i, desktopRowRefs.current, false))}
+          </div>
 
-        {/* Playback controls pinned to bottom */}
-        <div className="shrink-0 p-3 flex gap-2 border-t">
-          <Button
-            onClick={handlePlayPause}
-            disabled={inMedia}
-            className="flex-1 h-9"
-          >
-            {isPlaying ? 'Pause' : playState === 'paused' ? 'Resume' : 'Play'}
-          </Button>
-          <Button
-            variant="outline"
-            size="icon-lg"
-            onClick={reset}
-            disabled={!hasStarted || inMedia}
-            title="Reset"
-            className="text-gray-600 text-lg"
-          >
-            ↺
-          </Button>
+          <div className="shrink-0 p-3 flex gap-2 border-t">
+            <Button
+              onClick={handlePlayPause}
+              disabled={!hasStarted}
+              className="flex-1 h-9"
+            >
+              {isPlaying ? 'Pause' : playState === 'paused' ? 'Resume' : 'Play'}
+            </Button>
+            <Button
+              variant="outline"
+              size="icon-lg"
+              onClick={reset}
+              disabled={!hasStarted}
+              title="Reset"
+              className="text-gray-600 text-lg"
+            >
+              ↺
+            </Button>
+          </div>
         </div>
       </div>
     </>
