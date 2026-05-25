@@ -29,7 +29,7 @@ export default function TravelIcon({ pos, bearing, mode, playState }: Props) {
   const icon = useMemo(
     () =>
       L.divIcon({
-        html: `<img src="/icons/${mode === 'plane' ? 'flight' : mode}.png" style="width:40px;height:auto;display:block;transform:${iconTransform(bearingRef.current)};" />`,
+        html: `<img src="${import.meta.env.BASE_URL}icons/${mode === 'plane' ? 'flight' : mode}.png" style="width:40px;height:auto;display:block;transform:${iconTransform(bearingRef.current)};" />`,
         className: '',
         iconSize: [40, 40],
         iconAnchor: [20, 20],
