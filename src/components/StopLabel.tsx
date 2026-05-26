@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useMap } from 'react-leaflet'
 import L from 'leaflet'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ROUTE_COLOR } from '@/lib/config'
 import type { Section } from '@/types'
@@ -14,6 +15,13 @@ function LabelOverlay({ section }: Props) {
   const map = useMap()
   const wrapperRef = useRef<HTMLDivElement>(null)
   const latlng = L.latLng(section.lat, section.lng)
+  const [open, setOpen] = useState(false)
+  const [mediaIdx, setMediaIdx] = useState(0)
+  const mediaCount = section.media?.length ?? 0
+
+  useEffect(() => {
+    if (!open) setMediaIdx(0)
+  }, [open])
 
   useEffect(() => {
     const update = () => {
@@ -37,21 +45,63 @@ function LabelOverlay({ section }: Props) {
   return createPortal(
     <div ref={wrapperRef} style={{ position: 'absolute', marginLeft: -5, marginTop: -10 }}>
       {section.media?.length ? (
-        <HoverCard>
-          <HoverCardTrigger render={<div />} delay={150} closeDelay={100} className="stop-label">
+        <HoverCard open={open} onOpenChange={setOpen}>
+          <HoverCardTrigger
+            render={
+              <div
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setOpen((v) => !v)
+                }}
+              />
+            }
+            delay={150}
+            closeDelay={100}
+            className="stop-label"
+          >
             {dot}{name}
           </HoverCardTrigger>
-          <HoverCardContent side="top" className="w-64 p-0 overflow-hidden">
-            <img
-              src={section.media[0]}
-              alt={section.name ?? ''}
-              className="w-full h-40 object-cover"
-            />
-            {section.media.length > 1 && (
-              <p className="px-3 py-2 text-xs text-muted-foreground">
-                +{section.media.length - 1} more photo{section.media.length > 2 ? 's' : ''}
-              </p>
-            )}
+          <HoverCardContent
+            side="top"
+            collisionPadding={{ top: 16, bottom: 16, left: 8, right: typeof window !== 'undefined' && window.innerWidth >= 768 ? 320 : 8 }}
+            className="p-0 overflow-hidden w-[calc(100vw-16px)] max-h-[calc(100vh-32px)] md:w-[min(calc(100vw-336px),800px)] md:max-h-[800px]"
+          >
+            <div className="relative">
+              <img
+                src={section.media[mediaIdx]}
+                alt={section.name ?? ''}
+                className="block w-full max-h-[calc(100vh-32px)] md:max-h-[800px] object-contain"
+              />
+              {mediaCount > 1 && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Previous photo"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setMediaIdx((i) => (i - 1 + mediaCount) % mediaCount)
+                    }}
+                    className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white p-1"
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next photo"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setMediaIdx((i) => (i + 1) % mediaCount)
+                    }}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white p-1"
+                  >
+                    <ChevronRight className="size-4" />
+                  </button>
+                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-black/50 text-white text-[10px] px-2 py-0.5">
+                    {mediaIdx + 1} / {mediaCount}
+                  </div>
+                </>
+              )}
+            </div>
           </HoverCardContent>
         </HoverCard>
       ) : (

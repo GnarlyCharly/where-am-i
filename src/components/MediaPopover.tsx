@@ -133,7 +133,7 @@ export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia, endMed
   return createPortal(
     <div
       ref={containerRef}
-      className="fixed top-4 left-4 right-4 bottom-48 md:bottom-4 md:right-76 z-2000 bg-black rounded-2xl overflow-hidden flex flex-col select-none touch-none"
+      className="fixed top-40 left-4 right-4 bottom-40 md:top-4 md:bottom-4 md:right-76 z-2000 bg-black rounded-2xl overflow-hidden flex flex-col select-none touch-none"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerCancel}

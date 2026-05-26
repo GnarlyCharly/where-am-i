@@ -82,11 +82,7 @@ export function useRouteAnimation(
     const { points, distances, sectionIndices, sectionEndIndices } = path
     const maxDist = distances[distances.length - 1]
 
-    // Use the speed for whatever section we're currently in
-    const curPtIdx = findPtIdx(distances, distanceRef.current)
-    const curSecIdx = sectionIndices[Math.min(curPtIdx, points.length - 1)]
-    const speed =
-      trip.sections[curSecIdx]?.speed ?? trip.animationSpeed ?? DEFAULT_SPEED
+    const speed = DEFAULT_SPEED
 
     distanceRef.current = Math.min(
       distanceRef.current + speed * speedMultiplierRef.current * delta,

@@ -82,7 +82,7 @@ export default function App() {
       trip.sections
         .map((section, index) => ({ section, index }))
         .filter(({ section, index }) => {
-          if (!section.name) return false
+          if (!section.name || !section.media?.length) return false
           return playState === 'overview' || revealedSections.has(index)
         }),
     [playState, revealedSections],
@@ -119,7 +119,6 @@ export default function App() {
         revealedSections={revealedSections}
         play={play}
         pause={pause}
-        reset={handleReset}
         speedMultiplier={speedMultiplier}
         setSpeedMultiplier={setSpeedMultiplier}
         zoomIn={() => mapRef.current?.zoomIn()}

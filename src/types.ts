@@ -12,7 +12,6 @@ export interface Section {
   waypoints?: Waypoint[]
   date: string
   transportMode?: TransportMode
-  speed?: number
   notes?: string
   media?: string[]
 }
@@ -21,7 +20,6 @@ export interface Trip {
   name: string
   lat: number
   lng: number
-  animationSpeed?: number
   sections: Section[]
 }
 

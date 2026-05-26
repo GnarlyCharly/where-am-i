@@ -10,7 +10,6 @@ interface Props {
   revealedSections: Set<number>
   play: (fromIndex?: number) => void
   pause: () => void
-  reset: () => void
   speedMultiplier: number
   setSpeedMultiplier: (m: number) => void
   zoomIn: () => void
@@ -27,7 +26,6 @@ export default function BottomSheet({
   revealedSections,
   play,
   pause,
-  reset,
   speedMultiplier,
   setSpeedMultiplier,
   zoomIn,
@@ -45,20 +43,28 @@ export default function BottomSheet({
   const hasStarted = playState !== 'overview'
 
 
-  // Keep active row centred in whichever list is visible
+  // Pause playback when the mobile sheet is expanded so the list can be browsed
+  useEffect(() => {
+    if (expanded && isPlaying) pause()
+  }, [expanded, isPlaying, pause])
+
+  // Keep active row visible — pinned to top when collapsed on mobile, centred otherwise
   useEffect(() => {
     function scrollToActive(
       list: HTMLDivElement | null,
       refs: Map<number, HTMLDivElement>,
+      pinTop: boolean,
     ) {
       if (!list) return
       const row = refs.get(activeSection)
       if (!row) return
-      list.scrollTop = row.offsetTop - list.clientHeight / 2 + ROW_H / 2
+      list.scrollTop = pinTop
+        ? row.offsetTop
+        : row.offsetTop - list.clientHeight / 2 + ROW_H / 2
     }
-    scrollToActive(mobileListRef.current, mobileRowRefs.current)
-    scrollToActive(desktopListRef.current, desktopRowRefs.current)
-  }, [activeSection])
+    scrollToActive(mobileListRef.current, mobileRowRefs.current, !expanded)
+    scrollToActive(desktopListRef.current, desktopRowRefs.current, false)
+  }, [activeSection, expanded])
 
   function rowState(i: number): 'done' | 'active' | 'upcoming' {
     if (hasStarted && revealedSections.has(i)) return 'done'
@@ -90,7 +96,10 @@ export default function BottomSheet({
           'flex items-center gap-2 px-4 cursor-pointer select-none',
           isActive ? 'bg-orange-50 text-[#e85d04]' : 'text-gray-700 hover:bg-gray-50',
         ].join(' ')}
-        onClick={() => play(i)}
+        onClick={() => {
+          if (showInlineControls) setExpanded(false)
+          play(i)
+        }}
       >
         <span className={`w-4 shrink-0 text-xs ${isActive ? 'font-bold' : 'opacity-40'}`}>
           {indicator}
@@ -104,24 +113,15 @@ export default function BottomSheet({
         {section.media?.length && (
           <ImageIcon className="shrink-0 size-3.5 opacity-40 mr-1" />
         )}
-        {isActive && showInlineControls && (
+        {(isActive || (!hasStarted && i === 0)) && showInlineControls && (
           <div className="flex gap-1 shrink-0 ml-1">
             <Button
               variant="outline"
               size="default"
               className="px-2 text-[#e85d04] border-orange-300 hover:bg-orange-50 hover:text-[#e85d04]"
-              onClick={(e) => { e.stopPropagation(); handlePlayPause() }}
+              onClick={(e) => { e.stopPropagation(); setExpanded(false); handlePlayPause() }}
             >
               {isPlaying ? '⏸' : '▶'}
-            </Button>
-            <Button
-              variant="outline"
-              size="default"
-              className="px-2 text-gray-500"
-              onClick={(e) => { e.stopPropagation(); reset() }}
-              title="Reset"
-            >
-              ↺
             </Button>
           </div>
         )}
@@ -143,6 +143,22 @@ export default function BottomSheet({
 
   return (
     <>
+      {/* ── Mobile speed control — top right, hidden on md+ ── */}
+      <div className="md:hidden fixed top-3 right-3 z-[999] bg-white/95 backdrop-blur rounded-lg shadow-md px-2 py-1 flex items-center gap-1">
+        <span className="text-xs text-gray-500 mr-1">Speed</span>
+        {SPEED_OPTIONS.map((m) => (
+          <Button
+            key={m}
+            variant={speedMultiplier === m ? 'default' : 'outline'}
+            size="sm"
+            className="px-2 h-7 text-xs"
+            onClick={() => setSpeedMultiplier(m)}
+          >
+            {m}x
+          </Button>
+        ))}
+      </div>
+
       {/* ── Mobile bottom sheet — hidden on md+ ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[999] bg-white rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,0.15)]">
         {/* Drag handle */}
@@ -154,11 +170,10 @@ export default function BottomSheet({
           <div className="w-10 h-1 bg-gray-300 rounded-full" />
         </div>
 
-        {/* Section list — fixed to 3 rows when collapsed, 50vh when expanded */}
         <div
           ref={mobileListRef}
-          className={`transition-[height] duration-300 ${expanded ? 'overflow-y-auto' : 'overflow-hidden'}`}
-          style={{ height: expanded ? 'calc(50vh - 40px)' : `${ROW_H * 3}px` }}
+          className={`relative transition-[height] duration-300 ${expanded ? 'overflow-y-auto' : 'overflow-hidden'}`}
+          style={{ height: expanded ? 'calc(50vh - 40px)' : `${ROW_H}px` }}
         >
           {trip.sections.map((s, i) => renderRow(s, i, mobileRowRefs.current, true))}
         </div>
@@ -205,7 +220,7 @@ export default function BottomSheet({
         </div>
 
         <div className="flex flex-col flex-1 min-h-0">
-          <div ref={desktopListRef} className="flex-1 min-h-0 overflow-y-auto">
+          <div ref={desktopListRef} className="relative flex-1 min-h-0 overflow-y-auto">
             {trip.sections.map((s, i) => renderRow(s, i, desktopRowRefs.current, false))}
           </div>
 
