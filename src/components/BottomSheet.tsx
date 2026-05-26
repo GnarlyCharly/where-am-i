@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ImageIcon } from 'lucide-react'
 import type { PlayState, Section, Trip } from '@/types'
 import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
 
 interface Props {
   trip: Trip
@@ -12,12 +13,14 @@ interface Props {
   pause: () => void
   speedMultiplier: number
   setSpeedMultiplier: (m: number) => void
+  autoSkipMedia: boolean
+  setAutoSkipMedia: (v: boolean) => void
   zoomIn: () => void
   zoomOut: () => void
 }
 
 const ROW_H = 48 // px — matches h-12, drives collapsed height calculation
-const SPEED_OPTIONS = [0.5, 1, 2, 3, 5]
+const SPEED_OPTIONS = [0.5, 1, 2, 3, 5, 10]
 
 export default function BottomSheet({
   trip,
@@ -28,6 +31,8 @@ export default function BottomSheet({
   pause,
   speedMultiplier,
   setSpeedMultiplier,
+  autoSkipMedia,
+  setAutoSkipMedia,
   zoomIn,
   zoomOut,
 }: Props) {
@@ -144,19 +149,29 @@ export default function BottomSheet({
   return (
     <>
       {/* ── Mobile speed control — top right, hidden on md+ ── */}
-      <div className="md:hidden fixed top-3 right-3 z-[999] bg-white/95 backdrop-blur rounded-lg shadow-md px-2 py-1 flex items-center gap-1">
-        <span className="text-xs text-gray-500 mr-1">Speed</span>
-        {SPEED_OPTIONS.map((m) => (
-          <Button
-            key={m}
-            variant={speedMultiplier === m ? 'default' : 'outline'}
+      <div className="md:hidden fixed top-3 right-3 z-[999] bg-white/95 backdrop-blur rounded-lg shadow-md px-2 py-1 flex flex-col gap-1">
+        <div className="flex items-center gap-1">
+          <span className="text-xs text-gray-500 mr-1">Speed</span>
+          {SPEED_OPTIONS.map((m) => (
+            <Button
+              key={m}
+              variant={speedMultiplier === m ? 'default' : 'outline'}
+              size="sm"
+              className="px-2 h-7 text-xs"
+              onClick={() => setSpeedMultiplier(m)}
+            >
+              {m}x
+            </Button>
+          ))}
+        </div>
+        <label className="flex items-center gap-2 pb-0.5 text-xs text-gray-500 cursor-pointer">
+          <span>Skip photos</span>
+          <Switch
             size="sm"
-            className="px-2 h-7 text-xs"
-            onClick={() => setSpeedMultiplier(m)}
-          >
-            {m}x
-          </Button>
-        ))}
+            checked={autoSkipMedia}
+            onCheckedChange={(v) => setAutoSkipMedia(v)}
+          />
+        </label>
       </div>
 
       {/* ── Mobile bottom sheet — hidden on md+ ── */}
@@ -196,6 +211,16 @@ export default function BottomSheet({
             </Button>
           ))}
         </div>
+
+        {/* Skip media toggle */}
+        <label className="shrink-0 px-3 py-2 flex items-center justify-between gap-2 text-xs text-gray-600 cursor-pointer">
+          <span>Skip photos while playing</span>
+          <Switch
+            size="sm"
+            checked={autoSkipMedia}
+            onCheckedChange={(v) => setAutoSkipMedia(v)}
+          />
+        </label>
 
         {/* Zoom control */}
         <div className="shrink-0 px-3 py-2 flex items-center gap-1 border-b">

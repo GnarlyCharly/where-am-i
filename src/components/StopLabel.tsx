@@ -6,7 +6,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ROUTE_COLOR } from '@/lib/config'
+import { resolveMediaUrl } from '@/lib/cloudinary'
 import type { Section } from '@/types'
+
+const POPOVER_IMG_WIDTH = 1200
 
 interface Props {
   section: Section
@@ -22,6 +25,8 @@ function LabelOverlay({ section }: Props) {
   const [dimensions, setDimensions] = useState<Map<string, { w: number; h: number }>>(new Map())
   const mediaCount = section.media?.length ?? 0
   const currentSrc = section.media?.[mediaIdx]
+    ? resolveMediaUrl(section.media[mediaIdx], { width: POPOVER_IMG_WIDTH })
+    : undefined
   const isLoaded = currentSrc ? loadedSrcs.has(currentSrc) : true
   const dims = currentSrc ? dimensions.get(currentSrc) : undefined
   const aspectRatio = dims ? `${dims.w} / ${dims.h}` : undefined
@@ -87,18 +92,20 @@ function LabelOverlay({ section }: Props) {
           <HoverCardContent
             side="top"
             collisionPadding={{ top: 16, bottom: 16, left: 8, right: typeof window !== 'undefined' && window.innerWidth >= 768 ? 320 : 8 }}
-            className="p-0 overflow-hidden w-[calc(100vw-16px)] max-h-[calc(100vh-32px)] md:w-[min(calc(100vw-336px),800px)] md:max-h-[800px]"
+            className="p-0 overflow-hidden w-[calc(100vw-16px)] max-h-125 md:w-[min(calc(100vw-336px),800px)]"
           >
             <div className="relative">
               {!isLoaded && (
                 <Skeleton
-                  className="w-full max-h-[calc(100vh-32px)] md:max-h-[800px] rounded-none"
+                  className="w-full max-h-125 rounded-none"
                   style={{ aspectRatio: aspectRatio ?? '4 / 3' }}
                 />
               )}
               <img
-                src={section.media[mediaIdx]}
+                src={currentSrc}
                 alt={section.name ?? ''}
+                loading="lazy"
+                decoding="async"
                 onLoad={() => {
                   if (currentSrc) {
                     setLoadedSrcs((prev) => {
@@ -109,7 +116,7 @@ function LabelOverlay({ section }: Props) {
                     })
                   }
                 }}
-                className={`block w-full max-h-[calc(100vh-32px)] md:max-h-[800px] object-contain ${isLoaded ? '' : 'hidden'}`}
+                className={`block w-full max-h-125 object-contain ${isLoaded ? '' : 'hidden'}`}
               />
               {mediaCount > 1 && (
                 <>

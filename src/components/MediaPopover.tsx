@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { IMAGE_DURATION_MS } from '@/lib/config'
+import { isVideoUrl, resolveMediaUrl } from '@/lib/cloudinary'
 
-const VIDEO_EXTS = /\.(mp4|webm|mov)$/i
+const FULLSCREEN_MEDIA_WIDTH = 1200
 
 interface Props {
   mediaQueue: string[]
@@ -13,8 +14,9 @@ interface Props {
 }
 
 export default function MediaPopover({ mediaQueue, mediaIndex, skipMedia, endMedia }: Props) {
-  const currentUrl = mediaQueue[mediaIndex]
-  const isVideo = VIDEO_EXTS.test(currentUrl)
+  const rawEntry = mediaQueue[mediaIndex]
+  const currentUrl = resolveMediaUrl(rawEntry, { width: FULLSCREEN_MEDIA_WIDTH })
+  const isVideo = isVideoUrl(rawEntry)
 
   const [segProgress, setSegProgress] = useState(0)
 

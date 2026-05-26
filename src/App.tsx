@@ -20,6 +20,7 @@ const path = buildPath(trip)
 export default function App() {
   const mapRef = useRef<L.Map | null>(null)
   const [speedMultiplier, setSpeedMultiplier] = useState(1)
+  const [autoSkipMedia, setAutoSkipMedia] = useState(false)
   // Set to true during the flyTo zoom; cleared on moveend so auto-pan doesn't
   // interrupt the zoom animation by calling panTo on the very next RAF frame.
   const isZoomingRef = useRef(false)
@@ -53,7 +54,7 @@ export default function App() {
     reset,
     skipMedia,
     endMedia,
-  } = useRouteAnimation(path, trip, speedMultiplier, onZoom, () => handleResetRef.current())
+  } = useRouteAnimation(path, trip, speedMultiplier, autoSkipMedia, onZoom, () => handleResetRef.current())
 
   // Auto-pan the map to follow the icon during active playback
   useEffect(() => {
@@ -121,6 +122,8 @@ export default function App() {
         pause={pause}
         speedMultiplier={speedMultiplier}
         setSpeedMultiplier={setSpeedMultiplier}
+        autoSkipMedia={autoSkipMedia}
+        setAutoSkipMedia={setAutoSkipMedia}
         zoomIn={() => mapRef.current?.zoomIn()}
         zoomOut={() => mapRef.current?.zoomOut()}
       />

@@ -38,11 +38,14 @@ export function useRouteAnimation(
   path: PathData,
   trip: Trip,
   speedMultiplier: number,
+  autoSkipMedia: boolean,
   onZoom?: (fromIndex: number) => void,
   onComplete?: () => void,
 ): RouteAnimationReturn {
   const speedMultiplierRef = useRef(speedMultiplier)
   speedMultiplierRef.current = speedMultiplier
+  const autoSkipMediaRef = useRef(autoSkipMedia)
+  autoSkipMediaRef.current = autoSkipMedia
   const onCompleteRef = useRef(onComplete)
   onCompleteRef.current = onComplete
 
@@ -141,7 +144,7 @@ export function useRouteAnimation(
     setActiveSection(activeSec)
     if (revealedChanged) setRevealedSections(new Set(newRevealed))
 
-    if (mediaToShow) {
+    if (mediaToShow && !autoSkipMediaRef.current) {
       stopRaf()
       playStateRef.current = 'media'
       mediaQueueRef.current = mediaToShow
@@ -211,7 +214,7 @@ export function useRouteAnimation(
 
       // If this section has media, show it first — animation resumes from startDist after
       const media = trip.sections[idx].media
-      if (media?.length) {
+      if (media?.length && !autoSkipMediaRef.current) {
         mediaQueueRef.current = media
         mediaIndexRef.current = 0
         playStateRef.current = 'media'
