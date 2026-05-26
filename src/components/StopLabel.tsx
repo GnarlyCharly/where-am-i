@@ -4,6 +4,7 @@ import { useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ROUTE_COLOR } from '@/lib/config'
 import type { Section } from '@/types'
 
@@ -17,11 +18,33 @@ function LabelOverlay({ section }: Props) {
   const latlng = L.latLng(section.lat, section.lng)
   const [open, setOpen] = useState(false)
   const [mediaIdx, setMediaIdx] = useState(0)
+  const [loadedSrcs, setLoadedSrcs] = useState<Set<string>>(new Set())
+  const [dimensions, setDimensions] = useState<Map<string, { w: number; h: number }>>(new Map())
   const mediaCount = section.media?.length ?? 0
+  const currentSrc = section.media?.[mediaIdx]
+  const isLoaded = currentSrc ? loadedSrcs.has(currentSrc) : true
+  const dims = currentSrc ? dimensions.get(currentSrc) : undefined
+  const aspectRatio = dims ? `${dims.w} / ${dims.h}` : undefined
 
   useEffect(() => {
     if (!open) setMediaIdx(0)
   }, [open])
+
+  // Preload current image off-screen so we know its natural dimensions
+  // before showing it — lets the skeleton match the eventual image size.
+  useEffect(() => {
+    if (!currentSrc || dimensions.has(currentSrc)) return
+    const img = new Image()
+    img.onload = () => {
+      setDimensions((prev) => {
+        if (prev.has(currentSrc)) return prev
+        const next = new Map(prev)
+        next.set(currentSrc, { w: img.naturalWidth, h: img.naturalHeight })
+        return next
+      })
+    }
+    img.src = currentSrc
+  }, [currentSrc, dimensions])
 
   useEffect(() => {
     const update = () => {
@@ -67,10 +90,26 @@ function LabelOverlay({ section }: Props) {
             className="p-0 overflow-hidden w-[calc(100vw-16px)] max-h-[calc(100vh-32px)] md:w-[min(calc(100vw-336px),800px)] md:max-h-[800px]"
           >
             <div className="relative">
+              {!isLoaded && (
+                <Skeleton
+                  className="w-full max-h-[calc(100vh-32px)] md:max-h-[800px] rounded-none"
+                  style={{ aspectRatio: aspectRatio ?? '4 / 3' }}
+                />
+              )}
               <img
                 src={section.media[mediaIdx]}
                 alt={section.name ?? ''}
-                className="block w-full max-h-[calc(100vh-32px)] md:max-h-[800px] object-contain"
+                onLoad={() => {
+                  if (currentSrc) {
+                    setLoadedSrcs((prev) => {
+                      if (prev.has(currentSrc)) return prev
+                      const next = new Set(prev)
+                      next.add(currentSrc)
+                      return next
+                    })
+                  }
+                }}
+                className={`block w-full max-h-[calc(100vh-32px)] md:max-h-[800px] object-contain ${isLoaded ? '' : 'hidden'}`}
               />
               {mediaCount > 1 && (
                 <>
