@@ -93,7 +93,6 @@ export default function App() {
     <div className="w-full h-screen">
       <Map trip={trip} mapRef={mapRef}>
         <SectionRoute
-          trip={trip}
           path={path}
           traveledPoints={traveledPoints}
           playState={playState}

@@ -1,12 +1,10 @@
-import { useEffect, useRef } from 'react'
-import { Polyline, useMap } from 'react-leaflet'
+import { Polyline } from 'react-leaflet'
 import L from 'leaflet'
 import type { PathData } from '@/lib/geo'
-import type { PlayState, TransportMode, Trip } from '@/types'
+import type { PlayState, TransportMode } from '@/types'
 import { ROUTE_COLOR } from '@/lib/config'
 
 interface Props {
-  trip: Trip
   path: PathData
   traveledPoints: L.LatLng[]
   playState: PlayState
@@ -19,38 +17,49 @@ function lineOptions(mode?: TransportMode): L.PathOptions {
   return base
 }
 
-export default function SectionRoute({ trip, path, traveledPoints, playState }: Props) {
-  const map = useMap()
-  const animLineRef = useRef<L.Polyline | null>(null)
-  const isOverview = playState === 'overview'
-
-  // Imperative polyline for the animated route — bypasses React reconciliation each frame
-  useEffect(() => {
-    const line = L.polyline([], { color: ROUTE_COLOR, weight: 3, opacity: 0.7 })
-    line.addTo(map)
-    animLineRef.current = line
-    return () => {
-      line.remove()
+// Group an ordered point list into runs of consecutive same-mode segments,
+// using path.pointModes as the per-index mode lookup. The boundary point
+// between two runs is shared so the rendered lines connect without a gap.
+function groupByMode(
+  points: L.LatLng[],
+  pointModes: (TransportMode | undefined)[],
+): { points: L.LatLng[]; mode: TransportMode | undefined }[] {
+  const runs: { points: L.LatLng[]; mode: TransportMode | undefined }[] = []
+  if (points.length < 2) return runs
+  let runStart = 0
+  for (let i = 1; i < points.length; i++) {
+    const atEnd = i === points.length - 1
+    const modeChangesNext = !atEnd && pointModes[i + 1] !== pointModes[i]
+    if (atEnd || modeChangesNext) {
+      runs.push({
+        points: points.slice(runStart, i + 1),
+        mode: pointModes[i],
+      })
+      runStart = i
     }
-  }, [map])
+  }
+  return runs
+}
 
-  useEffect(() => {
-    animLineRef.current?.setLatLngs(traveledPoints)
-  }, [traveledPoints])
-
-  // During playback the animated line above handles rendering; hide the overview polylines
-  if (!isOverview) return null
+export default function SectionRoute({ path, traveledPoints, playState }: Props) {
+  const isOverview = playState === 'overview'
+  // Overview shows the entire path; playback shows the traveled portion.
+  // traveledPoints[i] aligns with path.pointModes[i] (the i-th traveled point
+  // sits on the segment whose incoming mode is pointModes[i]), so the same
+  // grouping function works for both.
+  const runs = isOverview
+    ? groupByMode(path.points, path.pointModes)
+    : groupByMode(traveledPoints, path.pointModes)
 
   return (
     <>
-      {trip.sections.map((section, i) => {
-        const startIdx = i === 0 ? 0 : path.sectionEndIndices[i - 1]
-        const endIdx = path.sectionEndIndices[i]
-        const points = path.points.slice(startIdx, endIdx + 1)
-        return (
-          <Polyline key={i} positions={points} pathOptions={lineOptions(section.transportMode)} />
-        )
-      })}
+      {runs.map((run, i) => (
+        <Polyline
+          key={`${isOverview ? 'o' : 't'}-${i}`}
+          positions={run.points}
+          pathOptions={lineOptions(run.mode)}
+        />
+      ))}
     </>
   )
 }

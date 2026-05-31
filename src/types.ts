@@ -1,8 +1,10 @@
-export type TransportMode = 'campervan' | 'plane' | 'ferry'
+export type TransportMode = 'campervan' | 'car' | 'plane' | 'ferry'
 
 export interface Waypoint {
   lat: number
   lng: number
+  // Mode for the leg arriving at this waypoint; defaults to the section's transportMode.
+  transportMode?: TransportMode
 }
 
 export interface Section {

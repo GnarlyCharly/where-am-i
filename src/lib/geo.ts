@@ -1,11 +1,12 @@
 import L from 'leaflet'
-import type { Trip } from '@/types'
+import type { TransportMode, Trip } from '@/types'
 
 export interface PathData {
   points: L.LatLng[]
-  distances: number[]          // cumulative km from start, parallel to points[]
-  sectionIndices: number[]     // which section each point belongs to, parallel to points[]
-  sectionEndIndices: number[]  // index in points[] where section[i]'s destination is
+  distances: number[]                          // cumulative km from start, parallel to points[]
+  sectionIndices: number[]                     // which section each point belongs to, parallel to points[]
+  sectionEndIndices: number[]                  // index in points[] where section[i]'s destination is
+  pointModes: (TransportMode | undefined)[]    // mode of the segment ENDING at this point; index 0 mirrors index 1
 }
 
 const DEG = Math.PI / 180
@@ -73,6 +74,7 @@ export function buildPath(trip: Trip): PathData {
   const distances: number[] = []
   const sectionIndices: number[] = []
   const sectionEndIndices: number[] = []
+  const pointModes: (TransportMode | undefined)[] = []
 
   let cumDist = 0
 
@@ -80,20 +82,27 @@ export function buildPath(trip: Trip): PathData {
   points.push(L.latLng(trip.lat, trip.lng))
   distances.push(0)
   sectionIndices.push(0)
+  pointModes.push(undefined) // patched after first real segment is pushed
 
   for (let i = 0; i < trip.sections.length; i++) {
     const section = trip.sections[i]
-    const isPlane = section.transportMode === 'plane'
+    const sectionMode = section.transportMode
 
-    // All stops in this leg: waypoints (if any) then the section destination
-    const stops: Array<{ lat: number; lng: number }> = [
-      ...(section.waypoints ?? []),
-      { lat: section.lat, lng: section.lng },
+    // Each leg's mode comes from its destination stop (waypoint or section dest),
+    // falling back to the section's mode when the waypoint doesn't specify one.
+    const stops: Array<{ lat: number; lng: number; mode?: TransportMode }> = [
+      ...(section.waypoints ?? []).map((w) => ({
+        lat: w.lat,
+        lng: w.lng,
+        mode: w.transportMode ?? sectionMode,
+      })),
+      { lat: section.lat, lng: section.lng, mode: sectionMode },
     ]
 
     for (const stop of stops) {
       const last = points[points.length - 1]
       const from: L.LatLngLiteral = { lat: last.lat, lng: last.lng }
+      const isPlane = stop.mode === 'plane'
 
       if (isPlane) {
         const distKm = haversineKm(from, stop)
@@ -108,17 +117,23 @@ export function buildPath(trip: Trip): PathData {
           points.push(arc[k])
           distances.push(cumDist)
           sectionIndices.push(i)
+          pointModes.push(stop.mode)
         }
       } else {
         cumDist += haversineKm(from, stop)
         points.push(L.latLng(stop.lat, stop.lng))
         distances.push(cumDist)
         sectionIndices.push(i)
+        pointModes.push(stop.mode)
       }
     }
 
     sectionEndIndices.push(points.length - 1)
   }
 
-  return { points, distances, sectionIndices, sectionEndIndices }
+  // Mirror the first real segment's mode back onto the trip-start point so
+  // consumers can treat pointModes[i] uniformly without a special case at i=0.
+  if (pointModes.length > 1) pointModes[0] = pointModes[1]
+
+  return { points, distances, sectionIndices, sectionEndIndices, pointModes }
 }
