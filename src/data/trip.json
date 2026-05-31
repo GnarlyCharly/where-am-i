@@ -6,7 +6,22 @@
     {
       "lat": 59.2526,
       "lng": 15.2253,
-      "date": "2025-08-29"
+      "date": "2025-08-29",
+      "notes": "Första dagen mot Örebro",
+      "waypoints": [
+        {
+          "lat": 61.725672,
+          "lng": 17.085114
+        },
+        {
+          "lat": 60.66376,
+          "lng": 17.089233
+        },
+        {
+          "lat": 59.626103,
+          "lng": 16.572876
+        }
+      ]
     },
     {
       "lat": 58.5271,
@@ -262,7 +277,7 @@
       "lng": 17.3559,
       "transportMode": "car",
       "waypoints": [
-        { 
+        {
           "lat": 59.6394,
           "lng": 17.9421,
           "transportMode": "plane"

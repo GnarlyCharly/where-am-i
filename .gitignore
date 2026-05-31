@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# TripEditor session backup
+src/data/trip.backup.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
