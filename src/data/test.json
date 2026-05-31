@@ -1,0 +1,197 @@
+{
+  "name": "Europe 2025",
+  "lat": 59.3293,
+  "lng": 18.0686,
+  "sections": [
+    {
+      "name": "Stockholm",
+      "lat": 59.3293,
+      "lng": 18.0686,
+      "date": "2025-06-01",
+      "notes": "The adventure begins."
+    },
+    {
+      "lat": 57.7816,
+      "lng": 14.1557,
+      "date": "2025-06-03",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Copenhagen",
+      "lat": 55.6761,
+      "lng": 12.5683,
+      "date": "2025-06-07",
+      "transportMode": "campervan",
+      "notes": "Crossed the Øresund Bridge from Malmö."
+    },
+    {
+      "name": "Hamburg",
+      "lat": 53.5753,
+      "lng": 10.0153,
+      "date": "2025-06-11",
+      "transportMode": "campervan",
+      "waypoints": [
+        { "lat": 54.9024, "lng": 9.7928 }
+      ],
+      "notes": "Flensburg border crossing, then straight down to Hamburg."
+    },
+    {
+      "lat": 50.9333,
+      "lng": 6.9500,
+      "date": "2025-06-14",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Amsterdam",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "date": "2025-06-17",
+      "transportMode": "campervan",
+      "notes": "Canals, bikes, and stroopwafels."
+    },
+    {
+      "name": "Paris",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "date": "2025-06-21",
+      "transportMode": "campervan",
+      "notes": "Three nights parked in the Bois de Boulogne.",
+      "media": [
+        "https://res.cloudinary.com/dmbrivcqo/image/upload/v1779823877/PXL_20260512_144143155_lyxens.jpg",
+        "https://picsum.photos/seed/paris-night/1200/800",
+        "https://picsum.photos/seed/seine-river/1200/800"
+      ]
+    },
+    {
+      "lat": 45.7640,
+      "lng": 4.8357,
+      "date": "2025-06-26",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Barcelona",
+      "lat": 41.3851,
+      "lng": 2.1734,
+      "date": "2025-06-30",
+      "transportMode": "campervan",
+      "notes": "Gaudí, tapas, and a sea view pitch."
+    },
+    {
+      "name": "Palma de Mallorca",
+      "lat": 39.5696,
+      "lng": 2.6502,
+      "date": "2025-07-04",
+      "transportMode": "ferry",
+      "waypoints": [
+        { "lat": 40.4, "lng": 2.05 },
+        { "lat": 39.9, "lng": 2.40 }
+      ],
+      "notes": "Overnight ferry from Barcelona — arrived at sunrise."
+    },
+    {
+      "name": "Lisbon",
+      "lat": 38.7169,
+      "lng": -9.1399,
+      "date": "2025-07-10",
+      "transportMode": "plane",
+      "speed": 200,
+      "notes": "Flew from Palma. Fado, pastéis de nata, and the Atlantic.",
+      "media": [
+        "https://picsum.photos/seed/lisbon-tram/1200/800",
+        "https://picsum.photos/seed/lisbon-sunset/1200/800"
+      ]
+    },
+    {
+      "name": "Seville",
+      "lat": 37.3891,
+      "lng": -5.9845,
+      "date": "2025-07-14",
+      "transportMode": "campervan",
+      "notes": "Flamenco, tapas, and the Alcázar gardens."
+    },
+    {
+      "lat": 37.8882,
+      "lng": -4.7794,
+      "date": "2025-07-17",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Granada",
+      "lat": 37.1773,
+      "lng": -3.5986,
+      "date": "2025-07-19",
+      "transportMode": "campervan",
+      "notes": "The Alhambra at sunrise — worth every step of the climb.",
+      "media": [
+        "https://picsum.photos/seed/granada-alhambra/1200/800",
+        "https://picsum.photos/seed/granada-night/1200/800"
+      ]
+    },
+    {
+      "name": "Gibraltar",
+      "lat": 36.1408,
+      "lng": -5.3536,
+      "date": "2025-07-23",
+      "transportMode": "campervan",
+      "notes": "Monkeys on the Rock and a surprisingly British high street."
+    },
+    {
+      "lat": 36.8340,
+      "lng": -2.4637,
+      "date": "2025-07-26",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Valencia",
+      "lat": 39.4699,
+      "lng": -0.3763,
+      "date": "2025-07-29",
+      "transportMode": "campervan",
+      "waypoints": [
+        { "lat": 37.6055, "lng": -0.9918 }
+      ],
+      "notes": "City of Arts and Sciences, then paella on the beach.",
+      "media": [
+        "https://picsum.photos/seed/valencia-arts/1200/800",
+        "https://picsum.photos/seed/valencia-beach/1200/800"
+      ]
+    },
+    {
+      "name": "Marseille",
+      "lat": 43.2965,
+      "lng": 5.3698,
+      "date": "2025-08-02",
+      "transportMode": "campervan",
+      "notes": "Bouillabaisse in the Vieux-Port, then sunset over the Calanques."
+    },
+    {
+      "name": "Nice",
+      "lat": 43.7102,
+      "lng": 7.2620,
+      "date": "2025-08-04",
+      "transportMode": "campervan"
+    },
+    {
+      "name": "Rome",
+      "lat": 41.9028,
+      "lng": 12.4964,
+      "date": "2025-08-08",
+      "transportMode": "plane",
+      "speed": 200,
+      "notes": "Flew from Nice. Colosseum, gelato, and getting lost in Trastevere.",
+      "media": [
+        "https://picsum.photos/seed/rome-colosseum/1200/800",
+        "https://picsum.photos/seed/rome-trevi/1200/800",
+        "https://picsum.photos/seed/rome-sunset/1200/800"
+      ]
+    },
+    {
+      "name": "Naples",
+      "lat": 40.8518,
+      "lng": 14.2681,
+      "date": "2025-08-12",
+      "transportMode": "campervan",
+      "notes": "Best pizza on earth, then a drive up to Vesuvius."
+    }
+  ]
+}

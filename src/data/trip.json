@@ -1,197 +1,576 @@
 {
   "name": "Europe 2025",
-  "lat": 59.3293,
-  "lng": 18.0686,
+  "lat": 61.8982453379691,
+  "lng": 17.35587825830715,
   "sections": [
     {
-      "name": "Stockholm",
-      "lat": 59.3293,
-      "lng": 18.0686,
-      "date": "2025-06-01",
-      "notes": "The adventure begins."
+      "lat": 59.2526,
+      "lng": 15.2253,
+      "date": "2025-08-29"
     },
     {
-      "lat": 57.7816,
-      "lng": 14.1557,
-      "date": "2025-06-03",
-      "transportMode": "campervan"
+      "lat": 58.5271,
+      "lng": 15.0216,
+      "date": "2025-09-01"
     },
     {
-      "name": "Copenhagen",
-      "lat": 55.6761,
-      "lng": 12.5683,
-      "date": "2025-06-07",
-      "transportMode": "campervan",
-      "notes": "Crossed the Øresund Bridge from Malmö."
+      "lat": 57.795,
+      "lng": 14.2638,
+      "date": "2025-09-02"
     },
     {
-      "name": "Hamburg",
-      "lat": 53.5753,
-      "lng": 10.0153,
-      "date": "2025-06-11",
-      "transportMode": "campervan",
-      "waypoints": [
-        { "lat": 54.9024, "lng": 9.7928 }
-      ],
-      "notes": "Flensburg border crossing, then straight down to Hamburg."
+      "lat": 55.6035,
+      "lng": 13.0449,
+      "date": "2025-09-05"
     },
     {
-      "lat": 50.9333,
-      "lng": 6.9500,
-      "date": "2025-06-14",
-      "transportMode": "campervan"
+      "lat": 53.3881,
+      "lng": 14.6271,
+      "date": "2025-09-06"
     },
     {
-      "name": "Amsterdam",
-      "lat": 52.3676,
-      "lng": 4.9041,
-      "date": "2025-06-17",
-      "transportMode": "campervan",
-      "notes": "Canals, bikes, and stroopwafels."
+      "lat": 52.2085,
+      "lng": 15.3759,
+      "date": "2025-09-11"
     },
     {
-      "name": "Paris",
-      "lat": 48.8566,
-      "lng": 2.3522,
-      "date": "2025-06-21",
-      "transportMode": "campervan",
-      "notes": "Three nights parked in the Bois de Boulogne.",
-      "media": [
-        "https://res.cloudinary.com/dmbrivcqo/image/upload/v1779823877/PXL_20260512_144143155_lyxens.jpg",
-        "https://picsum.photos/seed/paris-night/1200/800",
-        "https://picsum.photos/seed/seine-river/1200/800"
-      ]
+      "lat": 51.072,
+      "lng": 16.2126,
+      "date": "2025-09-12"
     },
     {
-      "lat": 45.7640,
-      "lng": 4.8357,
-      "date": "2025-06-26",
-      "transportMode": "campervan"
+      "lat": 50.4658,
+      "lng": 16.1014,
+      "date": "2025-09-13"
     },
     {
-      "name": "Barcelona",
-      "lat": 41.3851,
-      "lng": 2.1734,
-      "date": "2025-06-30",
-      "transportMode": "campervan",
-      "notes": "Gaudí, tapas, and a sea view pitch."
+      "lat": 49.9643,
+      "lng": 15.3029,
+      "date": "2025-09-14"
     },
     {
-      "name": "Palma de Mallorca",
-      "lat": 39.5696,
-      "lng": 2.6502,
-      "date": "2025-07-04",
-      "transportMode": "ferry",
-      "waypoints": [
-        { "lat": 40.4, "lng": 2.05 },
-        { "lat": 39.9, "lng": 2.40 }
-      ],
-      "notes": "Overnight ferry from Barcelona — arrived at sunrise."
+      "lat": 50.114,
+      "lng": 14.4265,
+      "date": "2025-09-18"
     },
     {
-      "name": "Lisbon",
-      "lat": 38.7169,
-      "lng": -9.1399,
-      "date": "2025-07-10",
+      "lat": 48.2416,
+      "lng": 15.3382,
+      "date": "2025-09-19"
+    },
+    {
+      "lat": 48.3923,
+      "lng": 15.4672,
+      "date": "2025-09-20"
+    },
+    {
+      "lat": 46.9453,
+      "lng": 17.8754,
+      "date": "2025-09-21"
+    },
+    {
+      "lat": 46.8028,
+      "lng": 17.5192,
+      "date": "2025-09-22"
+    },
+    {
+      "lat": 46.5848,
+      "lng": 16.0069,
+      "date": "2025-09-24"
+    },
+    {
+      "lat": 46.5331,
+      "lng": 15.6998,
+      "date": "2025-09-25"
+    },
+    {
+      "lat": 46.3703,
+      "lng": 14.1185,
+      "date": "2025-09-26"
+    },
+    {
+      "lat": 45.605,
+      "lng": 13.929,
+      "date": "2025-09-27"
+    },
+    {
+      "lat": 46.0514,
+      "lng": 13.4538,
+      "date": "2025-09-28"
+    },
+    {
+      "lat": 45.8839,
+      "lng": 13.2609,
+      "date": "2025-09-30"
+    },
+    {
+      "lat": 45.7326,
+      "lng": 12.6807,
+      "date": "2025-10-01"
+    },
+    {
+      "lat": 45.468,
+      "lng": 12.2789,
+      "date": "2025-10-02"
+    },
+    {
+      "lat": 45.4601,
+      "lng": 11.18,
+      "date": "2025-10-04"
+    },
+    {
+      "lat": 45.4309,
+      "lng": 10.6758,
+      "date": "2025-10-06"
+    },
+    {
+      "lat": 46.5863,
+      "lng": 11.6341,
+      "date": "2025-10-10"
+    },
+    {
+      "lat": 46.0057,
+      "lng": 11.0903,
+      "date": "2025-10-11"
+    },
+    {
+      "lat": 45.1529,
+      "lng": 10.6919,
+      "date": "2025-10-12"
+    },
+    {
+      "lat": 44.6139,
+      "lng": 10.9435,
+      "date": "2025-10-13"
+    },
+    {
+      "lat": 44.9264,
+      "lng": 9.9723,
+      "date": "2025-10-16"
+    },
+    {
+      "lat": 44.6375,
+      "lng": 7.9283,
+      "date": "2025-10-17"
+    },
+    {
+      "lat": 44.2079,
+      "lng": 8.0153,
+      "date": "2025-10-18"
+    },
+    {
+      "lat": 43.755,
+      "lng": 7.3988,
+      "date": "2025-10-19"
+    },
+    {
+      "lat": 43.4332,
+      "lng": 6.0721,
+      "date": "2025-10-20"
+    },
+    {
+      "lat": 43.628,
+      "lng": 5.1524,
+      "date": "2025-10-21"
+    },
+    {
+      "lat": 43.6732,
+      "lng": 4.4309,
+      "date": "2025-10-22"
+    },
+    {
+      "lat": 43.7441,
+      "lng": 4.5187,
+      "date": "2025-10-23"
+    },
+    {
+      "lat": 42.8032,
+      "lng": 3.0334,
+      "date": "2025-10-24"
+    },
+    {
+      "lat": 41.8215,
+      "lng": 2.8956,
+      "date": "2025-10-26"
+    },
+    {
+      "lat": 41.2649,
+      "lng": 1.5989,
+      "date": "2025-10-27"
+    },
+    {
+      "lat": 40.8208,
+      "lng": 0.4957,
+      "date": "2025-10-28"
+    },
+    {
+      "lat": 39.5798,
+      "lng": -0.4451,
+      "date": "2025-10-30"
+    },
+    {
+      "lat": 38.1915,
+      "lng": -0.5639,
+      "date": "2025-10-31"
+    },
+    {
+      "lat": 37.9329,
+      "lng": -0.751,
+      "date": "2025-11-01"
+    },
+    {
+      "lat": 40.7429,
+      "lng": 44.8536,
       "transportMode": "plane",
-      "speed": 200,
-      "notes": "Flew from Palma. Fado, pastéis de nata, and the Atlantic.",
-      "media": [
-        "https://picsum.photos/seed/lisbon-tram/1200/800",
-        "https://picsum.photos/seed/lisbon-sunset/1200/800"
-      ]
+      "date": "2025-11-17"
     },
     {
-      "name": "Seville",
-      "lat": 37.3891,
-      "lng": -5.9845,
-      "date": "2025-07-14",
-      "transportMode": "campervan",
-      "notes": "Flamenco, tapas, and the Alcázar gardens."
+      "lat": 40.1832,
+      "lng": 44.5195,
+      "transportMode": "car",
+      "date": "2025-11-20"
     },
     {
-      "lat": 37.8882,
-      "lng": -4.7794,
-      "date": "2025-07-17",
-      "transportMode": "campervan"
-    },
-    {
-      "name": "Granada",
-      "lat": 37.1773,
-      "lng": -3.5986,
-      "date": "2025-07-19",
-      "transportMode": "campervan",
-      "notes": "The Alhambra at sunrise — worth every step of the climb.",
-      "media": [
-        "https://picsum.photos/seed/granada-alhambra/1200/800",
-        "https://picsum.photos/seed/granada-night/1200/800"
-      ]
-    },
-    {
-      "name": "Gibraltar",
-      "lat": 36.1408,
-      "lng": -5.3536,
-      "date": "2025-07-23",
-      "transportMode": "campervan",
-      "notes": "Monkeys on the Rock and a surprisingly British high street."
-    },
-    {
-      "lat": 36.8340,
-      "lng": -2.4637,
-      "date": "2025-07-26",
-      "transportMode": "campervan"
-    },
-    {
-      "name": "Valencia",
-      "lat": 39.4699,
-      "lng": -0.3763,
-      "date": "2025-07-29",
-      "transportMode": "campervan",
-      "waypoints": [
-        { "lat": 37.6055, "lng": -0.9918 }
-      ],
-      "notes": "City of Arts and Sciences, then paella on the beach.",
-      "media": [
-        "https://picsum.photos/seed/valencia-arts/1200/800",
-        "https://picsum.photos/seed/valencia-beach/1200/800"
-      ]
-    },
-    {
-      "name": "Marseille",
-      "lat": 43.2965,
-      "lng": 5.3698,
-      "date": "2025-08-02",
-      "transportMode": "campervan",
-      "notes": "Bouillabaisse in the Vieux-Port, then sunset over the Calanques."
-    },
-    {
-      "name": "Nice",
-      "lat": 43.7102,
-      "lng": 7.2620,
-      "date": "2025-08-04",
-      "transportMode": "campervan"
-    },
-    {
-      "name": "Rome",
-      "lat": 41.9028,
-      "lng": 12.4964,
-      "date": "2025-08-08",
+      "lat": 45.637,
+      "lng": 8.7092,
       "transportMode": "plane",
-      "speed": 200,
-      "notes": "Flew from Nice. Colosseum, gelato, and getting lost in Trastevere.",
-      "media": [
-        "https://picsum.photos/seed/rome-colosseum/1200/800",
-        "https://picsum.photos/seed/rome-trevi/1200/800",
-        "https://picsum.photos/seed/rome-sunset/1200/800"
-      ]
+      "date": "2025-11-21"
     },
     {
-      "name": "Naples",
-      "lat": 40.8518,
-      "lng": 14.2681,
-      "date": "2025-08-12",
-      "transportMode": "campervan",
-      "notes": "Best pizza on earth, then a drive up to Vesuvius."
+      "lat": 37.9329,
+      "lng": -0.751,
+      "transportMode": "plane",
+      "date": "2025-11-22"
+    },
+    {
+      "lat": 37.5898,
+      "lng": -1.2917,
+      "date": "2025-12-13"
+    },
+    {
+      "lat": 36.7201,
+      "lng": -4.1645,
+      "date": "2025-12-14"
+    },
+    {
+      "lat": 36.5786,
+      "lng": -4.5645,
+      "date": "2025-12-16"
+    },
+    {
+      "lat": 61.8982,
+      "lng": 17.3559,
+      "transportMode": "car",
+      "waypoints": [
+        { 
+          "lat": 59.6394,
+          "lng": 17.9421,
+          "transportMode": "plane"
+        }
+      ],
+      "date": "2025-12-17"
+    },
+    {
+      "lat": 62.5058,
+      "lng": 17.41,
+      "transportMode": "car",
+      "date": "2025-12-18"
+    },
+    {
+      "lat": 62.2336,
+      "lng": 17.6536,
+      "transportMode": "car",
+      "date": "2025-12-19"
+    },
+    {
+      "lat": 61.8982,
+      "lng": 17.3559,
+      "transportMode": "car",
+      "date": "2025-12-21"
+    },
+    {
+      "lat": 59.6394,
+      "lng": 17.9421,
+      "transportMode": "car",
+      "date": "2025-12-22"
+    },
+    {
+      "lat": 36.5786,
+      "lng": -4.5646,
+      "transportMode": "plane",
+      "date": "2025-12-23"
+    },
+    {
+      "lat": 31.6317,
+      "lng": -8.0081,
+      "transportMode": "plane",
+      "date": "2026-01-01"
+    },
+    {
+      "lat": 36.5786,
+      "lng": -4.5646,
+      "transportMode": "plane",
+      "date": "2026-01-06"
+    },
+    {
+      "lat": 36.6976,
+      "lng": -4.7405,
+      "date": "2026-01-16"
+    },
+    {
+      "lat": 36.7703,
+      "lng": -2.605,
+      "date": "2026-01-23"
+    },
+    {
+      "lat": 37.3976,
+      "lng": -1.945,
+      "date": "2026-01-24"
+    },
+    {
+      "lat": 37.9328,
+      "lng": -0.751,
+      "date": "2026-01-25"
+    },
+    {
+      "lat": 38.0223,
+      "lng": -1.1038,
+      "date": "2026-02-11"
+    },
+    {
+      "lat": 38.1643,
+      "lng": -2.9962,
+      "date": "2026-02-13"
+    },
+    {
+      "lat": 37.9541,
+      "lng": -4.5551,
+      "date": "2026-02-14"
+    },
+    {
+      "lat": 37.4784,
+      "lng": -5.6501,
+      "date": "2026-02-16"
+    },
+    {
+      "lat": 37.3528,
+      "lng": -5.999,
+      "date": "2026-02-17"
+    },
+    {
+      "lat": 36.7501,
+      "lng": -6.4095,
+      "date": "2026-02-20"
+    },
+    {
+      "lat": 36.5309,
+      "lng": -6.3042,
+      "date": "2026-02-26"
+    },
+    {
+      "lat": 36.1561,
+      "lng": -5.3571,
+      "date": "2026-02-27"
+    },
+    {
+      "lat": 37.4413,
+      "lng": -6.7965,
+      "date": "2026-02-28"
+    },
+    {
+      "lat": 37.0355,
+      "lng": -7.8197,
+      "date": "2026-03-01"
+    },
+    {
+      "lat": 37.1852,
+      "lng": -8.4455,
+      "date": "2026-03-06"
+    },
+    {
+      "lat": 37.0779,
+      "lng": -8.7714,
+      "date": "2026-03-07"
+    },
+    {
+      "lat": 37.5242,
+      "lng": -8.7761,
+      "date": "2026-03-08"
+    },
+    {
+      "lat": 38.3802,
+      "lng": -8.5165,
+      "date": "2026-03-12"
+    },
+    {
+      "lat": 38.8015,
+      "lng": -7.4513,
+      "date": "2026-03-13"
+    },
+    {
+      "lat": 39.4894,
+      "lng": -6.412,
+      "date": "2026-03-15"
+    },
+    {
+      "lat": 40.1794,
+      "lng": -5.8306,
+      "date": "2026-03-20"
+    },
+    {
+      "lat": 40.5497,
+      "lng": -7.2414,
+      "date": "2026-03-21"
+    },
+    {
+      "lat": 41.1557,
+      "lng": -7.7804,
+      "date": "2026-03-22"
+    },
+    {
+      "lat": 41.8664,
+      "lng": -8.8594,
+      "date": "2026-03-23"
+    },
+    {
+      "lat": 42.1479,
+      "lng": -8.8136,
+      "date": "2026-03-27"
+    },
+    {
+      "lat": 42.7639,
+      "lng": -8.9387,
+      "date": "2026-03-28"
+    },
+    {
+      "lat": 42.893,
+      "lng": -8.4824,
+      "date": "2026-03-29"
+    },
+    {
+      "lat": 42.5454,
+      "lng": -6.5809,
+      "date": "2026-04-01"
+    },
+    {
+      "lat": 40.6616,
+      "lng": -4.7053,
+      "date": "2026-04-02"
+    },
+    {
+      "lat": 39.3861,
+      "lng": -3.235,
+      "date": "2026-04-03"
+    },
+    {
+      "lat": 38.0935,
+      "lng": -1.0768,
+      "date": "2026-04-04"
+    },
+    {
+      "lat": 37.9328,
+      "lng": -0.751,
+      "date": "2026-04-08"
+    },
+    {
+      "lat": 38.1087,
+      "lng": -0.6567,
+      "date": "2026-04-26"
+    },
+    {
+      "lat": 38.8572,
+      "lng": -0.5028,
+      "date": "2026-04-27"
+    },
+    {
+      "lat": 40.3323,
+      "lng": -1.0864,
+      "date": "2026-04-29"
+    },
+    {
+      "lat": 42.1934,
+      "lng": -1.6284,
+      "date": "2026-04-30"
+    },
+    {
+      "lat": 43.3463,
+      "lng": -2.6532,
+      "date": "2026-05-01"
+    },
+    {
+      "lat": 43.2978,
+      "lng": -2.0376,
+      "date": "2026-05-02"
+    },
+    {
+      "lat": 44.6847,
+      "lng": -1.0041,
+      "date": "2026-05-03"
+    },
+    {
+      "lat": 45.7081,
+      "lng": -0.3123,
+      "date": "2026-05-04"
+    },
+    {
+      "lat": 46.7731,
+      "lng": -1.2352,
+      "date": "2026-05-06"
+    },
+    {
+      "lat": 48.5581,
+      "lng": -1.5084,
+      "date": "2026-05-07"
+    },
+    {
+      "lat": 48.6149,
+      "lng": -1.5093,
+      "date": "2026-05-08"
+    },
+    {
+      "lat": 49.7,
+      "lng": 0.2168,
+      "date": "2026-05-09"
+    },
+    {
+      "lat": 49.0593,
+      "lng": 3.9493,
+      "date": "2026-05-10"
+    },
+    {
+      "lat": 49.3851,
+      "lng": 6.2261,
+      "date": "2026-05-13"
+    },
+    {
+      "lat": 49.8735,
+      "lng": 6.1884,
+      "date": "2026-05-14"
+    },
+    {
+      "lat": 50.2498,
+      "lng": 5.2793,
+      "date": "2026-05-16"
+    },
+    {
+      "lat": 50.3579,
+      "lng": 5.4576,
+      "date": "2026-05-17"
+    },
+    {
+      "lat": 51.2896,
+      "lng": 5.7867,
+      "date": "2026-05-18"
+    },
+    {
+      "lat": 52.9121,
+      "lng": 4.9625,
+      "date": "2026-05-20"
+    },
+    {
+      "lat": 53.0275,
+      "lng": 8.8096,
+      "date": "2026-05-22"
     }
   ]
 }
